@@ -2,17 +2,17 @@ import Head from 'next/head';
 
 import MainLayout from '../src/components/common/layout/MainLayout';
 
-function Home() {
+function Notifications() {
   return (
     <>
       <Head>
-        <title>Facebook Demo</title>
+        <title>Facebook Notifications</title>
       </Head>
-      1
+      Notifications
     </>
   );
 }
 
-Home.Layout = MainLayout;
+Notifications.Layout = MainLayout;
 
-export default Home;
+export default Notifications;
