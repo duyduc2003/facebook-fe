@@ -2,17 +2,17 @@ import Head from 'next/head';
 
 import MainLayout from '../src/components/common/layout/MainLayout';
 
-function Home() {
+function Bookmarks() {
   return (
     <>
       <Head>
-        <title>Facebook Demo</title>
+        <title>Facebook Bookmarks</title>
       </Head>
-      1
+      Bookmarks
     </>
   );
 }
 
-Home.Layout = MainLayout;
+Bookmarks.Layout = MainLayout;
 
-export default Home;
+export default Bookmarks;

@@ -2,17 +2,17 @@ import Head from 'next/head';
 
 import MainLayout from '../src/components/common/layout/MainLayout';
 
-function Home() {
+function Group() {
   return (
     <>
       <Head>
-        <title>Facebook Demo</title>
+        <title>Facebook Group</title>
       </Head>
-      1
+      group
     </>
   );
 }
 
-Home.Layout = MainLayout;
+Group.Layout = MainLayout;
 
-export default Home;
+export default Group;
