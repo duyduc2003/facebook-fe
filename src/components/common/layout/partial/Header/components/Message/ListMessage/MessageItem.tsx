@@ -1,4 +1,4 @@
-import Button from 'components/Button';
+import Button, { TypeOnClickBtn } from 'components/Button';
 import { IconSeen } from 'components/icon';
 import React from 'react';
 /* eslint-disable @next/next/no-img-element */
@@ -12,7 +12,7 @@ interface MessageItemProps {
   body: string;
   statusSend: 'iSend' | 'youSend';
   statusSeen: 'seen' | 'notSeen';
-  onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  onClick?: TypeOnClickBtn;
 }
 
 export default function MessageItem(props: MessageItemProps) {
