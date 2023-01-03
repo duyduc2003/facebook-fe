@@ -8,4 +8,7 @@ export const routes = {
   GROUP: '/group',
   BOOKMARKS: '/bookmarks',
   NOTIFICATIONS: '/notifications',
+  FRIEND: '/friend',
+  MESSENGER: '/messenger',
+  LOGIN: '/auth/login',
 };

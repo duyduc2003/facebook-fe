@@ -1,7 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
 import Button from 'components/Button';
 import { IconLogout, IconSetting } from 'components/icon';
+import Image from 'components/Image';
 import AppTippy, { HeadlessTippy, WrapPopper } from 'components/Popper';
+import { routes } from 'constants/common';
+import { useAuth } from 'context/auth';
+import { useBrowserLayoutEffect } from 'Hooks/useBrowserLayoutEffect';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 interface AccountProps {}
@@ -10,6 +15,9 @@ export default function Account(props: AccountProps) {
   const {} = props;
   const [showAccount, setShowAccount] = useState(false);
 
+  const { currentAuth, logOut } = useAuth();
+  const router = useRouter();
+
   const handleToggleOpen = () => {
     setShowAccount(!showAccount);
   };
@@ -17,6 +25,18 @@ export default function Account(props: AccountProps) {
   const handleClose = () => {
     setShowAccount(false);
   };
+
+  const handleLogOut = async () => {
+    try {
+      await logOut();
+    } catch (error) {
+      console.log('🚀 ~ file: index.tsx:28 ~ handleLogOut ~ error', error);
+    }
+  };
+
+  useBrowserLayoutEffect(() => {
+    if (!currentAuth) router.push(routes.LOGIN);
+  }, [currentAuth]);
 
   const render = (attr: any) => (
     <WrapPopper
@@ -30,14 +50,15 @@ export default function Account(props: AccountProps) {
           className="w-full p-[8px] flex items-center"
         >
           <div className="min-w-[36px] w-[36px] h-[36px] mr-[12px]">
-            <img
-              src="https://scontent.fsgn8-4.fna.fbcdn.net/v/t39.30808-1/316239892_552326750060801_156209680511190881_n.jpg?stp=cp0_dst-jpg_p60x60&_nc_cat=111&ccb=1-7&_nc_sid=7206a8&_nc_ohc=FhZisTFoKXwAX8zlwAY&_nc_ht=scontent.fsgn8-4.fna&oh=00_AfB3zjfFb7jtQ_bJIJsC2JCxQPY_x0oO1AhPv3jvkx7ZDg&oe=63B776B5"
+            <Image
+              src={currentAuth?.photoURL || ''}
               alt=""
               className="w-full h-full rounded-[50%]"
+              rounded
             />
           </div>
           <div className="text-primaryText text-[15px] font-[500] break-words select-none ">
-            Đặng Duy Đức
+            {currentAuth?.displayName || ''}
           </div>
         </Button>
       </div>
@@ -57,6 +78,7 @@ export default function Account(props: AccountProps) {
           overlay
           rounded="8px"
           className="p-[8px] w-full flex items-center"
+          onClick={handleLogOut}
         >
           <div className="mr-[12px] w-[36px] h-[36px] bg-secondaryButtonBackground rounded-[50%] flex items-center justify-center">
             <IconLogout />
@@ -75,6 +97,7 @@ export default function Account(props: AccountProps) {
         onClickOutside={handleClose}
         visible={showAccount}
         render={render}
+        offset={[-15, 5]}
       >
         <div>
           <AppTippy content="Tài khoản">
@@ -86,12 +109,11 @@ export default function Account(props: AccountProps) {
                 className="flex items-center justify-center bg-secondaryButtonBackground w-[40px] h-[40px] ml-[8px]"
                 onClick={handleToggleOpen}
               >
-                <img
-                  src={
-                    'https://scontent.fsgn8-4.fna.fbcdn.net/v/t39.30808-1/316239892_552326750060801_156209680511190881_n.jpg?stp=cp0_dst-jpg_p60x60&_nc_cat=111&ccb=1-7&_nc_sid=7206a8&_nc_ohc=FhZisTFoKXwAX8zlwAY&_nc_ht=scontent.fsgn8-4.fna&oh=00_AfB3zjfFb7jtQ_bJIJsC2JCxQPY_x0oO1AhPv3jvkx7ZDg&oe=63B776B5'
-                  }
-                  className="rounded-[50%]"
+                <Image
+                  src={currentAuth?.photoURL || ''}
                   alt=""
+                  className="w-full h-full rounded-[50%]"
+                  rounded
                 />
               </Button>
             </div>

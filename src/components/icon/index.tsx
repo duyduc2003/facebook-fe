@@ -5,6 +5,10 @@ import IconImg4 from 'assets/icon/MIo7E0in8hl.png';
 import IconImg5 from 'assets/icon/I3KNRL0nuKK.png';
 import IconImg6 from 'assets/icon/HXzKxrtoJSJ.png';
 import IconImg7 from 'assets/icon/sCJi_qZpjUV.png';
+import IconImg8 from 'assets/icon/fwJfS2s82lU.png';
+import IconImg9 from 'assets/icon/bojgYDxN3p_.png';
+import IconImg10 from 'assets/icon/N__gx8ZfytG.png';
+import IconImg11 from 'assets/icon/wpncSZqETub.png';
 
 interface IconProps {
   fill?: string;
@@ -283,6 +287,76 @@ export const IconLogout = () => (
       backgroundImage: `url(${IconImg7.src})`,
       backgroundPosition: '0px -190px',
       backgroundSize: '34px 480px',
+      width: '20px',
+      height: '20px',
+      backgroundRepeat: 'no-repeat',
+      display: 'inline-block',
+    }}
+  ></i>
+);
+
+export const IconFriend = () => (
+  <i
+    style={{
+      backgroundImage: `url(${IconImg8.src})`,
+      backgroundPosition: '0px -304px',
+      backgroundSize: '38px 570px',
+      width: '36px',
+      height: '36px',
+      backgroundRepeat: 'no-repeat',
+      display: 'inline-block',
+    }}
+  ></i>
+);
+
+export const IconGroup = () => (
+  <i
+    style={{
+      backgroundImage: `url(${IconImg8.src})`,
+      backgroundPosition: '0px -76px',
+      backgroundSize: '38px 570px',
+      width: '36px',
+      height: '36px',
+      backgroundRepeat: 'no-repeat',
+      display: 'inline-block',
+    }}
+  ></i>
+);
+
+export const IconMessageColor = () => (
+  <i
+    style={{
+      backgroundImage: `url(${IconImg9.src})`,
+      backgroundPosition: '0 0',
+      backgroundSize: '38px 268px',
+      width: '36px',
+      height: '36px',
+      backgroundRepeat: 'no-repeat',
+      display: 'inline-block',
+    }}
+  ></i>
+);
+
+export const IconImage = () => (
+  <i
+    style={{
+      backgroundImage: `url(${IconImg10.src})`,
+      backgroundPosition: '0 -216px',
+      backgroundSize: '34px 634px',
+      width: '24px',
+      height: '24px',
+      backgroundRepeat: 'no-repeat',
+      display: 'inline-block',
+    }}
+  ></i>
+);
+
+export const IconCloseLg = () => (
+  <i
+    style={{
+      backgroundImage: `url(${IconImg11.src})`,
+      backgroundPosition: '-88px -110px',
+      backgroundSize: '190px 190px',
       width: '20px',
       height: '20px',
       backgroundRepeat: 'no-repeat',

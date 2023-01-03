@@ -7,6 +7,7 @@ module.exports = {
     screens: {
       sm: '640px',
       md: '768px',
+      custom_md: '897px',
       lg: '1024px',
       custom_lg: '1100px',
       xl: '1260px',
@@ -53,7 +54,9 @@ module.exports = {
       secondaryButtonBackground: '#E4E6EB',
       accent: 'hsl(214, 89%, 52%)',
       webWash: '#F0F2F5',
-      disabledIcon: '#BCC0C4'
+      disabledIcon: '#BCC0C4',
+      divider: '#CED0D4',
+      overlayAlpha80: 'rgba(244, 244, 244, 0.8)',
 
     }),
     columns: {

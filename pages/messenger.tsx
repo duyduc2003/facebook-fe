@@ -2,17 +2,17 @@ import Head from 'next/head';
 
 import MainLayout from 'components/common/layout/MainLayout';
 
-function Group() {
+function Messenger() {
   return (
     <>
       <Head>
-        <title>Facebook Group</title>
+        <title>Facebook Messenger</title>
       </Head>
-      group
+      Messenger
     </>
   );
 }
 
-Group.Layout = MainLayout;
+Messenger.Layout = MainLayout;
 
-export default Group;
+export default Messenger;

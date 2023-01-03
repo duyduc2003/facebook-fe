@@ -7,15 +7,19 @@ import { store } from 'store';
 import 'tippy.js/dist/tippy.css';
 import 'styles/tailwindcss.css';
 import 'styles/global.scss';
+import 'animate.css';
+import { AuthProvider, useAuth } from 'context/auth';
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const Layout = Component.Layout ?? EmptyLayout;
 
   return (
     // <Provider store={store}>
-    <Layout>
-      <Component {...pageProps} />
-    </Layout>
+    <AuthProvider>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    </AuthProvider>
     // </Provider>
   );
 }

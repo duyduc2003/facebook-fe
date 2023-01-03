@@ -73,9 +73,10 @@ export default function Message(props: indexProps) {
   return (
     <div>
       <HeadlessTippy
-        onClickOutside={handleClickOutSide}
         visible={showMess}
+        onClickOutside={handleClickOutSide}
         render={render}
+        placement="bottom"
         offset={[-15, 5]}
       >
         <div>

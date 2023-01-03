@@ -34,7 +34,7 @@ export default function Search(props: SearchProps) {
     <WrapPopper
       {...attr}
       className={cx(
-        'z-[999] -translate-x-[5px] rounded-b-[8px] w-[320px]',
+        'z-[9999999999999999999] -translate-x-[5px] rounded-b-[8px] w-[320px]',
         styles.shadowWrapPopper
       )}
     >
@@ -66,7 +66,7 @@ export default function Search(props: SearchProps) {
           className={cx(
             showPopperSearch &&
               cx(
-                'absolute top-0 left-0 w-[320px] transition-all duration-150 ease-linear z-[999]',
+                'absolute top-0 left-0 w-[320px] transition-all duration-150 ease-linear !z-[9999]',
                 styles.searchWrap
               ),
             'flex items-center h-heightHeader bg-white rounded-tr-[8px]'

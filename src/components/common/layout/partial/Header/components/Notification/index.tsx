@@ -1,12 +1,13 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import Button from 'components/Button';
 import { IconBell } from 'components/icon';
 import AppTippy, { HeadlessTippy, WrapPopper } from 'components/Popper';
 import { routes } from 'constants/common';
 import ListNotification from './ListNotification';
+import { useBrowserLayoutEffect } from 'Hooks/useBrowserLayoutEffect';
 
 interface NotificationProps {}
 
@@ -43,7 +44,7 @@ export default function Notification(props: NotificationProps) {
     </WrapPopper>
   );
 
-  useLayoutEffect(() => {
+  useBrowserLayoutEffect(() => {
     if (routes.NOTIFICATIONS === route.pathname) {
       setShowNor(true);
     } else {
@@ -58,6 +59,7 @@ export default function Notification(props: NotificationProps) {
         onClickOutside={handleClickOutside}
         visible={showNor && routes.NOTIFICATIONS !== route.pathname}
         render={render}
+        offset={[-15, 5]}
       >
         <div>
           <AppTippy content="Thông báo">

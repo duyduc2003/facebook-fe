@@ -26,6 +26,7 @@ html {
 html *::-webkit-scrollbar {
   border-radius: 0;
   width: 8px;
+  background-color: transparent;
 }
 
 html *::-webkit-scrollbar-thumb {
