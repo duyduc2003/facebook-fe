@@ -4,21 +4,22 @@ import React from 'react';
 import Button from 'components/Button';
 import SidebarItem from '../../SidebarItem';
 import { IconFriend, IconGroup, IconMessageColor } from 'components/icon';
-import { routes } from 'constants/common';
-import { useAuth } from 'context/auth';
+import { routes } from 'utils/constants/common';
+import fakeData from 'utils/constants/fakeData';
+import { useAuth } from 'context/AuthContext';
 
 interface SidebarLeftProps {}
 
 export default function SidebarLeft(props: SidebarLeftProps) {
   const {} = props;
 
-  const { currentAuth } = useAuth();
+  const { currentUser } = useAuth();
 
   return (
     <div className="mt-[16px] pl-[8px]">
       <SidebarItem
-        avatar={currentAuth?.photoURL || ''}
-        title={currentAuth?.displayName || ''}
+        avatar={currentUser?.avatar || ''}
+        title={`${currentUser?.firstName} ${currentUser?.lastName}` || ''}
         href="#"
       />
       <SidebarItem icon={<IconFriend />} title="Bạn bè" href={routes.FRIEND} />

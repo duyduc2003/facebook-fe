@@ -1,7 +1,5 @@
-export const themes = {
-  DARK: 'dark',
-  LIGHT: 'light',
-};
+export const AUTH_LOCAL = 'AUTH_LOCAL';
+export const LOCAL_REDIRECT_PATH = 'LOCAL_REDIRECT_PATH';
 
 export const routes = {
   HOME: '/',
@@ -10,5 +8,7 @@ export const routes = {
   NOTIFICATIONS: '/notifications',
   FRIEND: '/friend',
   MESSENGER: '/messenger',
-  LOGIN: '/auth/login',
+  AUTH: {
+    LOGIN: '/auth/login',
+  },
 };

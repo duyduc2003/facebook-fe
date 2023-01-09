@@ -1,23 +1,24 @@
+import React, { useEffect, useId, useRef, useState } from 'react';
 import classNames from 'classnames';
+
 import Button from 'components/Button';
 import { IconClose, IconImage, IconPlus } from 'components/icon';
 import Image from 'components/Image';
-import React, { useEffect, useId, useRef, useState } from 'react';
+import Input from 'components/Input';
 
 interface PostImageProps {
   showPostImg?: boolean;
+  setImage?: React.Dispatch<any>;
 }
 
 export default function PostImage(props: PostImageProps) {
-  const { showPostImg = false } = props;
+  const { showPostImg = false, setImage } = props;
 
   const [showWrapImg, setShowWrapImg] = useState(showPostImg || false);
   const [inputFile, setInputFile] = useState<any>();
   const [previewImg, setPreviewImg] = useState<any>();
 
   const inputFileID = useId();
-
-  const inputFileRef = useRef<any>();
 
   const handleShowWrapImg = () => {
     setShowWrapImg(true);
@@ -34,6 +35,7 @@ export default function PostImage(props: PostImageProps) {
     }
     // I've kept this example simple by using the first image instead of multiple
     setInputFile(e.target.files[0]);
+    setImage?.(e.target.files[0]);
   };
 
   const handleCleanPreviewImg = () => {
@@ -100,9 +102,8 @@ export default function PostImage(props: PostImageProps) {
                   </Button>
                 )}
               </div>
-              <input
-                ref={inputFileRef}
-                type="file"
+              <Input
+                type="image"
                 className="hidden"
                 id={inputFileID}
                 onChange={handleInputFileChange}

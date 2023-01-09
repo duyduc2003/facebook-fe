@@ -1,13 +1,18 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import classNames from 'classnames';
 
 import Button from 'components/Button';
-import { IconCloseLg, IconImage } from 'components/icon';
-import Image from 'components/Image';
+import { IconCloseLg, IconImage, IconLoading } from 'components/icon';
+import dynamic from 'next/dynamic';
+const Image = dynamic(() => import('components/Image'), { ssr: false });
 import MyEditor from 'components/MyEditor';
 import PostImage from './PostImage';
-import { useAuth } from 'context/auth';
+import fakeData from 'utils/constants/fakeData';
+import { useAuth } from 'context/AuthContext';
+import { uploadPost } from 'services/post';
+import { toastAlert } from '../ToastAlert/index';
+import { uploadImage } from 'services/image';
 
 interface PopupProps {
   visible?: boolean;
@@ -17,9 +22,43 @@ interface PopupProps {
 
 function Popup(props: PopupProps) {
   const { visible = false, openWithImage = false, setVisible } = props;
-  const { currentAuth } = useAuth();
 
+  const {} = useAuth();
   const [value, setValue] = useState<string | undefined>();
+  const [fileImage, setFileImage] = useState();
+  const [pendingPost, setPendingPost] = useState(false);
+
+  const { currentUser } = useAuth();
+
+  const handleUploadPost = async () => {
+    setPendingPost(true);
+
+    try {
+      if (value) {
+        let urlImg = null;
+        if (fileImage) {
+          const { imageUrl } = await uploadImage({
+            type: 'posts',
+            file: fileImage,
+          });
+          urlImg = imageUrl;
+        }
+        const { data, isError, message } = await uploadPost({
+          userID: currentUser?.id || '',
+          body: value,
+          imageUrl: urlImg,
+        });
+        toastAlert({
+          type: !isError && data ? 'success' : 'error',
+          message: message,
+        });
+      }
+    } catch (error) {
+      console.log('🚀 ~ file: Popup.tsx:39 ~ handleUploadPost ~ error', error);
+    }
+
+    setPendingPost(false);
+  };
 
   const closePopup = () => {
     setVisible?.(false);
@@ -53,10 +92,10 @@ function Popup(props: PopupProps) {
             </div>
             <div className="mx-4 mt-4 flex items-center">
               <div className="w-[40px] h-[40px] mr-[12px]">
-                <Image src={currentAuth?.photoURL || ''} alt="" rounded />
+                <Image src={currentUser?.avatar || ''} alt="" rounded />
               </div>
               <div className="text-primaryText text-[14px] font-[500]">
-                {currentAuth?.displayName || ''}
+                {`${currentUser?.firstName} ${currentUser?.lastName}` || ''}
               </div>
             </div>
             <div className="max-h-[400px] overflow-y-auto">
@@ -64,16 +103,27 @@ function Popup(props: PopupProps) {
                 <MyEditor setValue={setValue} />
               </div>
               <div className="my-2 mx-4">
-                <PostImage showPostImg={openWithImage} />
+                <PostImage
+                  showPostImg={openWithImage}
+                  setImage={setFileImage}
+                />
               </div>
             </div>
             <div className="mx-4">
               <Button
+                disabled={pendingPost}
                 overlay
+                center
                 rounded="8px"
                 className="h-[36px] bg-primaryButtonBackground text-white w-full text-[14px] font-[600] px-[12px]"
+                onClick={handleUploadPost}
               >
-                Đăng
+                Đăng{' '}
+                {pendingPost && (
+                  <div className="w-4 h-4 ml-2">
+                    <IconLoading />
+                  </div>
+                )}
               </Button>
             </div>
           </div>

@@ -8,9 +8,17 @@ export interface LayoutProps {
 }
 
 export type NextPageWithLayout = NextPage & {
-  Layout?: (props: LayoutProps) => ReactElement; 
+  Layout?: (props: LayoutProps) => ReactElement;
 };
 
 export type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
+
+export type ServiceResult<T> = {
+  isError: boolean;
+  data: T | undefined;
+  message: string;
+};
+
+export type ID = string;

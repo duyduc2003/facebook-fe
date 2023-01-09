@@ -1,11 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 import Button, { TypeOnClickBtn } from 'components/Button';
 import { IconImage } from 'components/icon';
-import Image from 'components/Image';
+import dynamic from 'next/dynamic';
+const Image = dynamic(() => import('components/Image'), { ssr: false });
 import WrapPost from 'components/WrapPost';
-import { useAuth } from 'context/auth';
+import fakeData from 'utils/constants/fakeData';
 import React, { ReactNode, useCallback, useState } from 'react';
 import Popup from './Popup';
+import { useAuth } from 'context/AuthContext';
 
 interface WritePostProps {}
 
@@ -15,9 +17,10 @@ export default function WritePost(props: WritePostProps) {
   const [showPopup, setShowPopup] = useState(false);
   const [openWithPostImg, setOpenWithPostImg] = useState(false);
 
-  const { currentAuth } = useAuth();
+  const { currentUser, handleRedirectLogin } = useAuth();
 
   const handleClickInput = () => {
+    handleRedirectLogin();
     setOpenWithPostImg(false);
     setShowPopup(true);
   };
@@ -38,7 +41,7 @@ export default function WritePost(props: WritePostProps) {
         <div className="flex items-center">
           <div className="w-[40px] h-[40px] mr-4">
             <Image
-              src={currentAuth?.photoURL || ''}
+              src={currentUser?.avatar || ''}
               alt=""
               className="w-full h-full rounded-[50%]"
               rounded

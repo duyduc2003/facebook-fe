@@ -3,8 +3,8 @@ import React, { ReactNode } from 'react';
 
 import Button from 'components/Button';
 import Link from 'next/link';
-import Image from 'components/Image';
-import { useAuth } from 'context/auth';
+import dynamic from 'next/dynamic';
+const Image = dynamic(() => import('components/Image'), { ssr: false });
 
 interface SidebarItemProps {
   avatar?: string;
@@ -15,7 +15,7 @@ interface SidebarItemProps {
 
 export default function SidebarItem(props: SidebarItemProps) {
   const { avatar = '', icon, title = '', href = '#' } = props;
-  const { currentAuth } = useAuth();
+
   return (
     <Link href={href}>
       <Button className="w-full p-2 flex items-center" rounded="8px" overlay>

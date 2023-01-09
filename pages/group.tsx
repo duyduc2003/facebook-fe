@@ -1,14 +1,17 @@
 import Head from 'next/head';
 
 import MainLayout from 'components/common/layout/MainLayout';
+import Button from 'components/Button';
+import { useAuth } from 'context/AuthContext';
 
 function Group() {
+  const { handleRedirectLogin } = useAuth();
   return (
     <>
       <Head>
         <title>Facebook Group</title>
       </Head>
-      group
+      <Button onClick={() => handleRedirectLogin()}>group</Button>
     </>
   );
 }

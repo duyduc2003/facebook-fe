@@ -1,6 +1,5 @@
-import { routes } from 'constants/common';
-import { useAuth } from 'context/auth';
-import { useBrowserLayoutEffect } from 'Hooks/useBrowserLayoutEffect';
+import { routes } from 'utils/constants/common';
+import { useBrowserLayoutEffect } from 'hooks/useBrowserLayoutEffect';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { ReactNode, useEffect } from 'react';
@@ -14,13 +13,7 @@ interface MainLayoutProps {
 export default function MainLayout(props: MainLayoutProps) {
   const { children } = props;
 
-  const { currentAuth } = useAuth();
-
   const route = useRouter();
-
-  useBrowserLayoutEffect(() => {
-    if (!currentAuth) route.push(routes.LOGIN);
-  }, [currentAuth]);
 
   return (
     <>
