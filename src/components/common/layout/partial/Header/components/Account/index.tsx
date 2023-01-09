@@ -1,13 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
-import Button from 'components/Button';
-import { IconLogout, IconSetting } from 'components/icon';
-import Image from 'components/Image';
-import AppTippy, { HeadlessTippy, WrapPopper } from 'components/Popper';
-import { routes } from 'constants/common';
-import { useAuth } from 'context/auth';
-import { useBrowserLayoutEffect } from 'Hooks/useBrowserLayoutEffect';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
+import dynamic from 'next/dynamic';
+
+import Button from 'components/Button';
+import { IconLogout, IconSetting } from 'components/icon';
+import AppTippy, { HeadlessTippy, WrapPopper } from 'components/Popper';
+import { routes } from 'utils/constants/common';
+import fakeData from 'utils/constants/fakeData';
+
+import { useAuth } from 'context/AuthContext';
+const Image = dynamic(() => import('components/Image'), { ssr: false });
 
 interface AccountProps {}
 
@@ -15,7 +18,8 @@ export default function Account(props: AccountProps) {
   const {} = props;
   const [showAccount, setShowAccount] = useState(false);
 
-  const { currentAuth, logOut } = useAuth();
+  const { currentUser, logout } = useAuth();
+
   const router = useRouter();
 
   const handleToggleOpen = () => {
@@ -26,17 +30,9 @@ export default function Account(props: AccountProps) {
     setShowAccount(false);
   };
 
-  const handleLogOut = async () => {
-    try {
-      await logOut();
-    } catch (error) {
-      console.log('🚀 ~ file: index.tsx:28 ~ handleLogOut ~ error', error);
-    }
+  const handleLogOut = () => {
+    logout();
   };
-
-  useBrowserLayoutEffect(() => {
-    if (!currentAuth) router.push(routes.LOGIN);
-  }, [currentAuth]);
 
   const render = (attr: any) => (
     <WrapPopper
@@ -51,14 +47,14 @@ export default function Account(props: AccountProps) {
         >
           <div className="min-w-[36px] w-[36px] h-[36px] mr-[12px]">
             <Image
-              src={currentAuth?.photoURL || ''}
+              src={currentUser?.avatar || ''}
               alt=""
               className="w-full h-full rounded-[50%]"
               rounded
             />
           </div>
           <div className="text-primaryText text-[15px] font-[500] break-words select-none ">
-            {currentAuth?.displayName || ''}
+            {`${currentUser?.firstName} ${currentUser?.lastName}` || ''}
           </div>
         </Button>
       </div>
@@ -110,7 +106,7 @@ export default function Account(props: AccountProps) {
                 onClick={handleToggleOpen}
               >
                 <Image
-                  src={currentAuth?.photoURL || ''}
+                  src={currentUser?.avatar || ''}
                   alt=""
                   className="w-full h-full rounded-[50%]"
                   rounded

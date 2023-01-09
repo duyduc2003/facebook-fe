@@ -5,7 +5,7 @@ import Search from './components/Search';
 import Action from './components/ActionHeader';
 import Nav from './components/Nav';
 import LinkActive from './components/Nav/LinkActive';
-import { routes } from 'constants/common';
+import { routes } from 'utils/constants/common';
 import { IconBookmark, IconBookmarkFill } from 'components/icon';
 
 interface HeaderProps {}

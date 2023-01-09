@@ -1,4 +1,4 @@
-import { routes } from 'constants/common';
+import { routes } from 'utils/constants/common';
 import React from 'react';
 import AccountRequest from '../../components/AccountRequest';
 import Region from '../../components/Region/index';

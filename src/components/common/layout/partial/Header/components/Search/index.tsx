@@ -6,7 +6,7 @@ import { IconArrowLeft, IconFB, IconSearch } from 'components/icon';
 import { HeadlessTippy } from 'components/Popper';
 import WrapPopper from 'components/Popper/WrapPopper';
 import Button from 'components/Button';
-import { routes } from 'constants/common';
+import { routes } from 'utils/constants/common';
 
 import styles from './search.module.scss';
 import AccountSearch from 'components/AccountSearch';

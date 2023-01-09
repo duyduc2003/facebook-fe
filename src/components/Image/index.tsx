@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import React, { useEffect, useState } from 'react';
 
 import placeholderImg from 'assets/image/placeholderImg.png';
-import { useBrowserLayoutEffect } from 'Hooks/useBrowserLayoutEffect';
+import { useBrowserLayoutEffect } from 'hooks/useBrowserLayoutEffect';
 
 interface ImageProps {
   src: string;
@@ -22,7 +22,7 @@ export default function Image(props: ImageProps) {
     fallback = placeholderImg.src,
   } = props;
 
-  const [source, setSource] = useState(src || fallback);
+  const [source, setSource] = useState(src);
 
   const _style: { [a: string]: any } = {};
   let _class = '';

@@ -5,9 +5,9 @@ import React, { useState } from 'react';
 import Button from 'components/Button';
 import { IconBell } from 'components/icon';
 import AppTippy, { HeadlessTippy, WrapPopper } from 'components/Popper';
-import { routes } from 'constants/common';
+import { routes } from 'utils/constants/common';
 import ListNotification from './ListNotification';
-import { useBrowserLayoutEffect } from 'Hooks/useBrowserLayoutEffect';
+import { useBrowserLayoutEffect } from 'hooks/useBrowserLayoutEffect';
 
 interface NotificationProps {}
 

@@ -11,15 +11,31 @@ import {
 import WrapPost from 'components/WrapPost';
 import WritePost from 'components/WritePost';
 import Posted from 'components/Posted';
-import { useAuth } from 'context/auth';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { routes } from '../src/constants/common';
+import { routes } from 'utils/constants/common';
+import { getAllPost, getPosts } from 'services/post';
+import { toastAlert } from 'components/ToastAlert/index';
+import { PostModal } from 'interfaces/post';
+import fakeData from 'utils/constants/fakeData';
+import { firestore } from 'appFirebase';
 
 function Home() {
-  const { currentAuth } = useAuth();
-
   const route = useRouter();
+
+  const [posts, setPosts] = useState<PostModal[]>([]);
+
+  useEffect(() => {
+    try {
+      getAllPost(({ data, isError }) => {
+        if (!isError && data) {
+          setPosts(data);
+        } else toastAlert({ type: 'error', message: 'Tải bài viết lỗi' });
+      });
+    } catch (error) {
+      console.log('🚀 ~ file: index.tsx:28 ~ error', error);
+    }
+  }, [posts]);
 
   return (
     <>
@@ -32,31 +48,21 @@ function Home() {
         </Sidebar>
         <Content size="sm">
           <WritePost />
-          <Posted
-            avatar="https://scontent.fsgn8-3.fna.fbcdn.net/v/t39.30808-1/286414172_1072228776704968_9090821464898167189_n.jpg?stp=cp0_dst-jpg_p60x60&_nc_cat=104&ccb=1-7&_nc_sid=7206a8&_nc_ohc=tKYivTmmFo4AX_BqlaV&tn=5SeIpUa62FYozVB3&_nc_ht=scontent.fsgn8-3.fna&oh=00_AfA7f4N7oCFm1lo-4rP9IqFUDbP1GSFvuOob-p7y_eflfQ&oe=63B83ED6"
-            fullName="Đặng Duy Đức"
-            img="https://scontent.fsgn8-4.fna.fbcdn.net/v/t39.30808-6/323258880_593541069445554_7957765843319475832_n.jpg?stp=cp6_dst-jpg_s1080x2048&_nc_cat=105&ccb=1-7&_nc_sid=0debeb&_nc_ohc=zWtk0KVosToAX9_1Lhh&_nc_ht=scontent.fsgn8-4.fna&oh=00_AfCkPtmQxtd2FX4zzMSDjMZMP7BAkwugD1My0l3gilUWDQ&oe=63B7E6D5"
-          />
-          <Posted
-            avatar="https://scontent.fsgn8-3.fna.fbcdn.net/v/t39.30808-1/286414172_1072228776704968_9090821464898167189_n.jpg?stp=cp0_dst-jpg_p60x60&_nc_cat=104&ccb=1-7&_nc_sid=7206a8&_nc_ohc=tKYivTmmFo4AX_BqlaV&tn=5SeIpUa62FYozVB3&_nc_ht=scontent.fsgn8-3.fna&oh=00_AfA7f4N7oCFm1lo-4rP9IqFUDbP1GSFvuOob-p7y_eflfQ&oe=63B83ED6"
-            fullName="Đặng Duy Đức"
-            img="https://scontent.fsgn8-4.fna.fbcdn.net/v/t39.30808-6/323258880_593541069445554_7957765843319475832_n.jpg?stp=cp6_dst-jpg_s1080x2048&_nc_cat=105&ccb=1-7&_nc_sid=0debeb&_nc_ohc=zWtk0KVosToAX9_1Lhh&_nc_ht=scontent.fsgn8-4.fna&oh=00_AfCkPtmQxtd2FX4zzMSDjMZMP7BAkwugD1My0l3gilUWDQ&oe=63B7E6D5"
-          />
-          <Posted
-            avatar="https://scontent.fsgn8-3.fna.fbcdn.net/v/t39.30808-1/286414172_1072228776704968_9090821464898167189_n.jpg?stp=cp0_dst-jpg_p60x60&_nc_cat=104&ccb=1-7&_nc_sid=7206a8&_nc_ohc=tKYivTmmFo4AX_BqlaV&tn=5SeIpUa62FYozVB3&_nc_ht=scontent.fsgn8-3.fna&oh=00_AfA7f4N7oCFm1lo-4rP9IqFUDbP1GSFvuOob-p7y_eflfQ&oe=63B83ED6"
-            fullName="Đặng Duy Đức"
-            img="https://scontent.fsgn8-4.fna.fbcdn.net/v/t39.30808-6/323258880_593541069445554_7957765843319475832_n.jpg?stp=cp6_dst-jpg_s1080x2048&_nc_cat=105&ccb=1-7&_nc_sid=0debeb&_nc_ohc=zWtk0KVosToAX9_1Lhh&_nc_ht=scontent.fsgn8-4.fna&oh=00_AfCkPtmQxtd2FX4zzMSDjMZMP7BAkwugD1My0l3gilUWDQ&oe=63B7E6D5"
-          />
-          <Posted
-            avatar="https://scontent.fsgn8-3.fna.fbcdn.net/v/t39.30808-1/286414172_1072228776704968_9090821464898167189_n.jpg?stp=cp0_dst-jpg_p60x60&_nc_cat=104&ccb=1-7&_nc_sid=7206a8&_nc_ohc=tKYivTmmFo4AX_BqlaV&tn=5SeIpUa62FYozVB3&_nc_ht=scontent.fsgn8-3.fna&oh=00_AfA7f4N7oCFm1lo-4rP9IqFUDbP1GSFvuOob-p7y_eflfQ&oe=63B83ED6"
-            fullName="Đặng Duy Đức"
-            img="https://scontent.fsgn8-4.fna.fbcdn.net/v/t39.30808-6/323258880_593541069445554_7957765843319475832_n.jpg?stp=cp6_dst-jpg_s1080x2048&_nc_cat=105&ccb=1-7&_nc_sid=0debeb&_nc_ohc=zWtk0KVosToAX9_1Lhh&_nc_ht=scontent.fsgn8-4.fna&oh=00_AfCkPtmQxtd2FX4zzMSDjMZMP7BAkwugD1My0l3gilUWDQ&oe=63B7E6D5"
-          />
-          <Posted
-            avatar="https://scontent.fsgn8-3.fna.fbcdn.net/v/t39.30808-1/286414172_1072228776704968_9090821464898167189_n.jpg?stp=cp0_dst-jpg_p60x60&_nc_cat=104&ccb=1-7&_nc_sid=7206a8&_nc_ohc=tKYivTmmFo4AX_BqlaV&tn=5SeIpUa62FYozVB3&_nc_ht=scontent.fsgn8-3.fna&oh=00_AfA7f4N7oCFm1lo-4rP9IqFUDbP1GSFvuOob-p7y_eflfQ&oe=63B83ED6"
-            fullName="Đặng Duy Đức"
-            img="https://scontent.fsgn8-4.fna.fbcdn.net/v/t39.30808-6/323258880_593541069445554_7957765843319475832_n.jpg?stp=cp6_dst-jpg_s1080x2048&_nc_cat=105&ccb=1-7&_nc_sid=0debeb&_nc_ohc=zWtk0KVosToAX9_1Lhh&_nc_ht=scontent.fsgn8-4.fna&oh=00_AfCkPtmQxtd2FX4zzMSDjMZMP7BAkwugD1My0l3gilUWDQ&oe=63B7E6D5"
-          />
+          {posts && posts.length > 0 ? (
+            posts.map(({ id, body, imageUrl, userAvatar, userName }, i) => (
+              <Posted
+                key={`${id}-${body}-${i}`}
+                avatar={userAvatar}
+                fullName={userName || ''}
+                img={imageUrl}
+                content={body}
+              />
+            ))
+          ) : (
+            <WrapPost className="mt-5 text-sm text-center text-secondaryText font-[400]">
+              Không có bài viết nào gần đây.
+            </WrapPost>
+          )}
         </Content>
         <Sidebar
           className="custom_md:block hidden max-w-[280px]"

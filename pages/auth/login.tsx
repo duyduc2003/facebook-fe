@@ -1,48 +1,25 @@
 import Head from 'next/head';
-import React, { useCallback, useEffect } from 'react';
-
-import Button from 'components/Button';
-import MainLayout from 'components/common/layout/MainLayout';
-import Body from 'components/common/layout/partial/Body';
-import WrapPost from 'components/WrapPost';
-import { useAuth } from 'context/auth';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { routes } from 'constants/common';
+import React, { useCallback, useEffect, useState } from 'react';
 
-interface LoginProps {}
+import Input from 'components/Input';
+import Button from 'components/Button';
+import ModalPopup from 'components/Modal';
+import WrapPost from 'components/WrapPost';
+import { IconFacebookLarge } from 'components/icon';
+import Body from 'components/common/layout/partial/Body';
+import RegisterForm from 'components/auth/RegisterForm';
+import LoginForm from 'components/auth/LoginForm';
 
-export default function Login(props: LoginProps) {
-  const {} = props;
+export default function Login() {
+  const [showModalRegister, setModalRegister] = useState(false);
 
-  const { googleSignIn, facebookSignIn, currentAuth } = useAuth();
+  const router = useRouter();
 
-  const route = useRouter();
-
-  const handleLoginByGoogle = useCallback(async () => {
-    try {
-      const a = await googleSignIn();
-      console.log('🚀 ~ file: login.tsx:24 ~ handleLoginByGoogle ~ a', a);
-    } catch (error) {
-      console.log(
-        '🚀 ~ file: login.tsx:21 ~ handleLoginByGoogle ~ error',
-        error
-      );
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  const handleLoginByFB = useCallback(async () => {
-    try {
-      const a = await facebookSignIn();
-      console.log('🚀 ~ file: login.tsx:24 ~ facebookSignIn ~ a', a);
-    } catch (error) {
-      console.log('🚀 ~ file: login.tsx:21 ~ facebookSignIn ~ error', error);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    if (currentAuth !== null) route.push(routes.HOME);
-  }, [currentAuth]);
+  const onClickToggleModalRegister = useCallback(() => {
+    setModalRegister(!showModalRegister);
+  }, [showModalRegister]);
 
   return (
     <>
@@ -52,28 +29,34 @@ export default function Login(props: LoginProps) {
       <Body className="bg-webWash max-h-screen h-screen w-screen">
         <div className="flex items-center justify-center w-full">
           <div>
+            <IconFacebookLarge />
+
             <WrapPost>
-              <div className="flex flex-col">
-                <Button
-                  className="bg-primaryButtonBackground text-white text-[14px] font-[500] h-[40px] px-[12px] mx-4"
-                  rounded="8px"
-                  overlay
-                  onClick={handleLoginByFB}
-                >
-                  Đăng nhập với Facebook
-                </Button>
-                <Button
-                  className="mt-4 bg-white text-primaryText border text-[14px] font-[500] h-[40px] px-[12px] mx-4"
-                  rounded="8px"
-                  overlay
-                  onClick={handleLoginByGoogle}
-                >
-                  Đăng nhập với Google
-                </Button>
+              <div className="px-4 flex flex-col">
+                <LoginForm />
+                <hr className="my-5" />
+                <div className="flex justify-center mb-3">
+                  <Button
+                    onClick={onClickToggleModalRegister}
+                    overlay
+                    rounded="6px"
+                    className="bg-[#42b72a] text-white font-[500] px-[16px] text-[17px] leading-[48px]"
+                  >
+                    Tạo tài khoản mới
+                  </Button>
+                </div>
               </div>
             </WrapPost>
           </div>
         </div>
+        <ModalPopup
+          btnClose
+          visible={showModalRegister}
+          onClickBtnClose={onClickToggleModalRegister}
+          onClickOverlay={onClickToggleModalRegister}
+        >
+          <RegisterForm />
+        </ModalPopup>
       </Body>
     </>
   );

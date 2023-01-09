@@ -26,7 +26,11 @@ function useLocalStorage<T>(key: string, initialValue: T) {
       console.log('~ file: useLocalStorage.ts:26 ~ setValue ~ error', error);
     }
   };
-  return [storedValue, setValue] as const;
+
+  const removeValue = () => {
+    window.localStorage.removeItem(key);
+  };
+  return [storedValue, setValue, removeValue] as const;
 }
 
 export default useLocalStorage;

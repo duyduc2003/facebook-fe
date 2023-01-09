@@ -4,6 +4,7 @@
   "typescript.preferences.quoteStyle": "single", 
   "prettier.singleQuote": true,
   "cSpell.words": [
+    "Firestore",
     "tailwindcss",
     "tippyjs"
   ]

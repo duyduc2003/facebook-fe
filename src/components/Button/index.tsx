@@ -1,8 +1,8 @@
 import classNames from 'classnames';
-import React, { ReactNode } from 'react';
+import React, { memo, ReactNode, useEffect, useState } from 'react';
 
 export type TypeOnClickBtn = (
-  event: React.MouseEvent<
+  event?: React.MouseEvent<
     HTMLButtonElement | HTMLDivElement | HTMLLinkElement,
     MouseEvent
   >
@@ -16,10 +16,12 @@ interface ButtonProps {
   active?: boolean;
   children?: ReactNode;
   center?: boolean;
+  type?: 'button' | 'submit';
+  disabled?: boolean;
   onClick?: TypeOnClickBtn;
 }
 
-export default function Button(props: ButtonProps) {
+export default memo(function Button(props: ButtonProps) {
   const {
     children,
     className,
@@ -27,7 +29,9 @@ export default function Button(props: ButtonProps) {
     rounded = false,
     active = false,
     center = false,
+    disabled,
     target = 'button',
+    type = 'button',
     onClick,
   } = props;
 
@@ -42,14 +46,17 @@ export default function Button(props: ButtonProps) {
 
   return (
     <Comp
+      disabled={disabled}
       onClick={onClick}
       className={classNames(
         'relative ',
         active && '!bg-primaryDeemphasizedButtonBackground text-accent',
         center && 'flex items-center justify-center',
+        disabled && 'opacity-50',
         className
       )}
       style={{ ...styleWithOverlay }}
+      type={type}
     >
       {children}
       {overlay && (
@@ -60,4 +67,4 @@ export default function Button(props: ButtonProps) {
       )}
     </Comp>
   );
-}
+});
