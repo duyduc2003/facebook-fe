@@ -8,6 +8,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
+import { searchUser } from 'services/user';
 import { TypeOnClickBtn } from '../Button/index';
 
 interface ModalPopupProps {

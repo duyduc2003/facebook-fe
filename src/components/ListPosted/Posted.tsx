@@ -28,7 +28,10 @@ export default function Posted(props: PostedProps) {
           {fullName}
         </div>
       </div>
-      <div className="mx-4 mt-4">{content}</div>
+      <div
+        className="mx-4 mt-4"
+        dangerouslySetInnerHTML={{ __html: content }}
+      />
       {img && (
         <div className="my-4 flex justify-center">
           <Image src={img} alt="" className="object-cover" />

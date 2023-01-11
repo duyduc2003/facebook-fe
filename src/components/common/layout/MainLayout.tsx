@@ -13,8 +13,6 @@ interface MainLayoutProps {
 export default function MainLayout(props: MainLayoutProps) {
   const { children } = props;
 
-  const route = useRouter();
-
   return (
     <>
       <Head>

@@ -1,4 +1,3 @@
-import { Timestamp } from 'firebase/firestore';
 import { ID } from './common';
 
 export interface PostModal {
@@ -7,6 +6,6 @@ export interface PostModal {
   userAvatar?: string;
   userName?: string;
   imageUrl?: string | null;
-  body: string;
+  body: string | null;
   timestamp?: string;
 }

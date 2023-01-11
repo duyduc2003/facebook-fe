@@ -18,10 +18,12 @@ interface ButtonProps {
   center?: boolean;
   type?: 'button' | 'submit';
   disabled?: boolean;
+  primary?: boolean;
+  secondary?: boolean;
   onClick?: TypeOnClickBtn;
 }
 
-export default memo(function Button(props: ButtonProps) {
+function Button(props: ButtonProps, ref: any) {
   const {
     children,
     className,
@@ -29,6 +31,8 @@ export default memo(function Button(props: ButtonProps) {
     rounded = false,
     active = false,
     center = false,
+    primary = false,
+    secondary = false,
     disabled,
     target = 'button',
     type = 'button',
@@ -46,6 +50,7 @@ export default memo(function Button(props: ButtonProps) {
 
   return (
     <Comp
+      ref={ref}
       disabled={disabled}
       onClick={onClick}
       className={classNames(
@@ -53,6 +58,8 @@ export default memo(function Button(props: ButtonProps) {
         active && '!bg-primaryDeemphasizedButtonBackground text-accent',
         center && 'flex items-center justify-center',
         disabled && 'opacity-50',
+        primary && 'bg-primaryButtonBackground text-white',
+        secondary && 'bg-secondaryButtonBackground text-primaryText',
         className
       )}
       style={{ ...styleWithOverlay }}
@@ -67,4 +74,6 @@ export default memo(function Button(props: ButtonProps) {
       )}
     </Comp>
   );
-});
+}
+
+export default memo(React.forwardRef(Button));

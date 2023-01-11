@@ -1,39 +1,63 @@
 /* eslint-disable @next/next/no-img-element */
+import dynamic from 'next/dynamic';
+import React, {
+  memo,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
+
 import Button, { TypeOnClickBtn } from 'components/Button';
 import { IconImage } from 'components/icon';
-import dynamic from 'next/dynamic';
-const Image = dynamic(() => import('components/Image'), { ssr: false });
 import WrapPost from 'components/WrapPost';
-import fakeData from 'utils/constants/fakeData';
-import React, { ReactNode, useCallback, useState } from 'react';
 import Popup from './Popup';
 import { useAuth } from 'context/AuthContext';
+import { useAppSelector, useAppDispatch } from 'hooks/redux';
+import { selectors, actions } from './writePostState';
+import { useKeyPressHandler } from 'hooks-react-custom';
 
-interface WritePostProps {}
+const Image = dynamic(() => import('components/Image'), { ssr: false });
 
-export default function WritePost(props: WritePostProps) {
-  const {} = props;
+export default memo(function WritePost() {
+  const isShowPopup = useAppSelector(selectors.selectIsShowPopupWritePost);
+  const dispatch = useAppDispatch();
 
-  const [showPopup, setShowPopup] = useState(false);
+  const [showPopup, setShowPopup] = useState(isShowPopup);
   const [openWithPostImg, setOpenWithPostImg] = useState(false);
 
   const { currentUser, handleRedirectLogin } = useAuth();
 
-  const handleClickInput = () => {
-    handleRedirectLogin();
+  useKeyPressHandler('h', (e) => {
+    setShowPopup(true);
+  });
+  useKeyPressHandler('esc', (e) => {
+    setShowPopup(false);
+  });
+
+  const handleClickInput = useCallback(() => {
     setOpenWithPostImg(false);
     setShowPopup(true);
-  };
+    handleRedirectLogin();
+  }, []);
 
-  const handleClickPostWithImage = () => {
+  const handleClickPostWithImage = useCallback(() => {
     setOpenWithPostImg(true);
     setShowPopup(true);
-  };
+  }, []);
 
-  const setVisible = useCallback(
-    (visible: boolean) => setShowPopup(visible),
-    []
-  );
+  const setVisible = useCallback((visible: boolean) => {
+    setShowPopup(visible);
+  }, []);
+
+  useEffect(() => {
+    dispatch(actions.showPopupWritePost(showPopup));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showPopup]);
+
+  useEffect(() => {
+    setShowPopup(isShowPopup);
+  }, [isShowPopup]);
 
   return (
     <WrapPost>
@@ -85,4 +109,4 @@ export default function WritePost(props: WritePostProps) {
       </div>
     </WrapPost>
   );
-}
+});

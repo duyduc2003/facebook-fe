@@ -1,5 +1,6 @@
 import React, { useId, useState } from 'react';
 import classNames from 'classnames';
+import { useInputText } from 'hooks-react-custom';
 import Link from 'next/link';
 
 import { IconArrowLeft, IconFB, IconSearch } from 'components/icon';
@@ -18,7 +19,10 @@ interface SearchProps {}
 export default function Search(props: SearchProps) {
   const {} = props;
 
+  const inputText = useInputText('');
+
   const [showPopperSearch, setShowPopperSearch] = useState<boolean>(false);
+  console.log(inputText.value);
 
   const inputID = useId();
 
@@ -103,18 +107,19 @@ export default function Search(props: SearchProps) {
             >
               <IconSearch />
             </label>
-            <div className="flex-1">
+            <div className="flex-1 h-full">
               <input
                 id={inputID}
                 type="text"
                 className={cx(
-                  'bg-transparent text-[15px] w-[0px] xl:w-full h-full outline-none pl-[8px] pr-[16px] transition-all duration-300 ease-linear text-primaryText',
+                  'relative bg-transparent text-[15px] w-[0px] xl:w-full h-full outline-none pl-[8px] pr-[16px] transition-all duration-300 ease-linear text-primaryText z-[99999999999]',
                   showPopperSearch &&
                     '!w-full pl-[16px] xl:pl-[8px] pointer-events-none'
                 )}
                 autoComplete="off"
                 placeholder="Tìm kiếm trên Facebook"
                 onFocus={handleInputFocus}
+                {...inputText}
               />
             </div>
           </div>

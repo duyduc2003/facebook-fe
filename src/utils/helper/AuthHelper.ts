@@ -3,6 +3,7 @@ import { AuthModel, UserModel } from 'interfaces/auth';
 
 const AUTH_LOCAL_STORAGE_KEY = 'fb-auth';
 const USER_LOCAL_STORAGE_KEY = 'fb-user';
+
 const getAuth = (): AuthModel | undefined => {
   if (typeof window !== 'undefined') {
     if (!window.localStorage) {

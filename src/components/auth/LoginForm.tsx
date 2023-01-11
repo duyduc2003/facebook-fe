@@ -97,10 +97,11 @@ export default function LoginForm() {
       </div>
       <Button
         type="submit"
-        className="w-full bg-primaryButtonBackground text-white text-[18px] px-[16px] h-[48px] font-[400]"
+        className="w-full text-[18px] px-[16px] h-[48px] font-[400]"
         rounded="6px"
         overlay
         center
+        primary
         disabled={loading}
       >
         {loading ? (

@@ -11,7 +11,12 @@ export default function AccountRequest(props: AccountRequestProps) {
   const { avatar = '', fullName = '' } = props;
 
   return (
-    <Button overlay rounded="8px" className="p-2 w-full flex">
+    <Button
+      target="div"
+      overlay
+      rounded="8px"
+      className="p-2 w-full flex cursor-pointer"
+    >
       <div className="w-[60px] h-[60px] mr-[12px]">
         <img
           src={avatar}
@@ -25,7 +30,6 @@ export default function AccountRequest(props: AccountRequestProps) {
         </p>
         <div className="flex items-center mt-2">
           <Button
-            target="div"
             overlay
             rounded="6px"
             className="bg-primaryButtonBackground text-white px-[12px] font-[500] m-1 ml-0 flex items-center text-[14px] py-2 leading-[16px] z-[99]"
@@ -33,7 +37,6 @@ export default function AccountRequest(props: AccountRequestProps) {
             Xác nhận
           </Button>
           <Button
-            target="div"
             overlay
             rounded="6px"
             className="bg-secondaryButtonBackground text-primaryText px-[12px] font-[500] flex items-center text-[14px] py-2 leading-[16px] z-[99]"

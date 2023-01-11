@@ -13,6 +13,7 @@ import {
 import { database, firestore, storage } from 'appFirebase';
 import { AuthModel, UserModel, LoginModal } from 'interfaces/auth';
 import { ServiceResult } from 'interfaces/common';
+import { defaultData } from 'utils/constants/common';
 
 export const loginUser = async (data: LoginModal) => {
   try {
@@ -60,8 +61,7 @@ export const registerUser = async (user: UserModel | undefined) => {
   if (user)
     try {
       const data: UserModel = {
-        avatar:
-          'https://firebasestorage.googleapis.com/v0/b/fb-clone-1a8c4.appspot.com/o/images%2Favatar%2FProfile_avatar_placeholder_large.png?alt=media&token=8806b23c-d12b-425a-b6b3-07a9d620777c',
+        avatar: defaultData.avatar,
         ...user,
         password: md5(user.password || 'default'),
       };

@@ -1,4 +1,6 @@
 import Head from 'next/head';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 
 import MainLayout from 'components/common/layout/MainLayout';
 import Body from 'components/common/layout/partial/Body';
@@ -8,35 +10,16 @@ import {
   SidebarLeft,
   SidebarRight,
 } from 'components/common/layout/partial/Sidebar/modules/HomePage';
-import WrapPost from 'components/WrapPost';
 import WritePost from 'components/WritePost';
-import Posted from 'components/Posted';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import { routes } from 'utils/constants/common';
-import { getAllPost, getPosts } from 'services/post';
-import { toastAlert } from 'components/ToastAlert/index';
-import { PostModal } from 'interfaces/post';
-import fakeData from 'utils/constants/fakeData';
-import { firestore } from 'appFirebase';
+import ListPosted from 'components/ListPosted';
+import { searchUser } from 'services/user';
 
 function Home() {
-  const route = useRouter();
-
-  const [posts, setPosts] = useState<PostModal[]>([]);
-
   useEffect(() => {
-    try {
-      getAllPost(({ data, isError }) => {
-        if (!isError && data) {
-          setPosts(data);
-        } else toastAlert({ type: 'error', message: 'Tải bài viết lỗi' });
-      });
-    } catch (error) {
-      console.log('🚀 ~ file: index.tsx:28 ~ error', error);
-    }
-  }, [posts]);
-
+    (async () => {
+      await searchUser('d');
+    })();
+  }, []);
   return (
     <>
       <Head>
@@ -46,23 +29,9 @@ function Home() {
         <Sidebar className="custom_lg:block hidden max-w-[280px]" size="sm">
           <SidebarLeft />
         </Sidebar>
-        <Content size="sm">
+        <Content size="sm" className="mt-4">
           <WritePost />
-          {posts && posts.length > 0 ? (
-            posts.map(({ id, body, imageUrl, userAvatar, userName }, i) => (
-              <Posted
-                key={`${id}-${body}-${i}`}
-                avatar={userAvatar}
-                fullName={userName || ''}
-                img={imageUrl}
-                content={body}
-              />
-            ))
-          ) : (
-            <WrapPost className="mt-5 text-sm text-center text-secondaryText font-[400]">
-              Không có bài viết nào gần đây.
-            </WrapPost>
-          )}
+          <ListPosted />
         </Content>
         <Sidebar
           className="custom_md:block hidden max-w-[280px]"

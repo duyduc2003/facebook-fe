@@ -1,3 +1,6 @@
+import React, { useMemo, useState } from 'react';
+import { useRouter } from 'next/router';
+
 import Button from 'components/Button';
 import {
   Icon9Dot,
@@ -7,37 +10,53 @@ import {
   IconPost,
 } from 'components/icon';
 import AppTippy, { HeadlessTippy, WrapPopper } from 'components/Popper';
-import React, { useState } from 'react';
-import MenuItem, { MenuItemProps } from './MenuItem';
 
-const menuItem: MenuItemProps[] = [
-  {
-    link: '#',
-    title: 'Đăng',
-    description: 'Chia sẻ bài viết trên Bảng tin.',
-    icon: <IconPost />,
-  },
-  {
-    link: '#',
-    title: 'Tin',
-    description: 'Bạn có thể chia sẻ ảnh hoặc viết gì đó.',
-    icon: <IconBook />,
-    horizontal: true,
-  },
-  {
-    link: '#',
-    title: 'Nhóm',
-    description: 'Kết nối với những người cùng chung sở thích.',
-    icon: <IconPeopleGroupSmall />,
-  },
-];
+import MenuItem, { MenuItemProps } from './MenuItem';
+import { routes } from 'utils/constants/common';
+import { actions } from 'components/WritePost/writePostState';
+import { useAuth } from 'context/AuthContext';
+import { useAppDispatch } from 'hooks/redux';
 
 export default function Menu() {
   const [showMenu, setShowMenu] = useState(false);
 
+  const router = useRouter();
+  const { handleRedirectLogin } = useAuth();
+  const dispatch = useAppDispatch();
+
   const handleClickOutside = () => {
     setShowMenu(false);
   };
+
+  const menuItem: MenuItemProps[] = useMemo(
+    () => [
+      {
+        title: 'Đăng',
+        description: 'Chia sẻ bài viết trên Bảng tin.',
+        icon: <IconPost />,
+        onClick: () => {
+          handleRedirectLogin();
+          if (router.pathname !== routes.HOME) router.push(routes.HOME);
+          dispatch(actions.showPopupWritePost(true));
+          setShowMenu(false);
+        },
+        // horizontal: true,
+      },
+      // {
+      //   link: '#',
+      //   title: 'Tin',
+      //   description: 'Bạn có thể chia sẻ ảnh hoặc viết gì đó.',
+      //   icon: <IconBook />,
+      // },
+      // {
+      //   link: '#',
+      //   title: 'Nhóm',
+      //   description: 'Kết nối với những người cùng chung sở thích.',
+      //   icon: <IconPeopleGroupSmall />,
+      // },
+    ],
+    []
+  );
 
   const render = (attr: any) => (
     <WrapPopper
@@ -48,17 +67,20 @@ export default function Menu() {
         Tạo
       </div>
       <div>
-        {menuItem.map(({ title, description, icon, link, horizontal }, key) => (
-          <div key={`${key}-${title}`}>
-            <MenuItem
-              link={link}
-              title={title}
-              description={description}
-              icon={icon}
-            />
-            {horizontal && <hr className="m-[8px]" />}
-          </div>
-        ))}
+        {menuItem.map(
+          ({ title, description, icon, link, horizontal, onClick }, key) => (
+            <div key={`${key}-${title}`}>
+              <MenuItem
+                link={link}
+                title={title}
+                description={description}
+                icon={icon}
+                onClick={onClick}
+              />
+              {horizontal && <hr className="m-[8px]" />}
+            </div>
+          )
+        )}
       </div>
     </WrapPopper>
   );

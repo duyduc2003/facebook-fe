@@ -25,13 +25,13 @@ export default function Nav(props: NavProps) {
         iconActive={<IconHouseActive />}
         className="md:flex hidden"
       />
-      <LinkActive
+      {/* <LinkActive
         href={routes.GROUP}
         content="Nhóm"
         icon={<IconPeopleGroup />}
         iconActive={<IconPeopleGroupFill />}
         className="md:flex hidden"
-      />
+      /> */}
       <LinkActive
         href={routes.BOOKMARKS}
         content="Xem thêm"
