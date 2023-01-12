@@ -11,12 +11,11 @@ import {
 import { ID, ServiceResult } from 'interfaces/common';
 import { PostModal } from 'interfaces/post';
 import { getUserByID } from './user';
-import { UserModel } from '../interfaces/auth';
+
 export const uploadPost = async (data: PostModal) => {
-  console.log('🚀 ~ file: post.ts:9 ~ uploadPost ~ data', data);
   try {
     const body: PostModal = {
-      body: data.body,
+      body: data.body || null,
       userID: data.userID,
       imageUrl: data.imageUrl || null,
       timestamp: JSON.stringify(Date.now()),
@@ -45,87 +44,114 @@ export const uploadPost = async (data: PostModal) => {
   } as ServiceResult<string>;
 };
 
-export const getPosts = (
-  callback: ({
-    isError = false,
-    data = undefined,
-    message = '',
-  }: ServiceResult<PostModal[]>) => any
-) => {
+export const getPostsAllField = async () => {
   try {
-    const usersRef = collection(firestore, 'posts');
+    const posts: PostModal[] = [];
+    const { isError, data } = await getPosts();
+    if (!isError && data) {
+      for await (const { userID, ...rests } of data) {
+        const { isError, data } = await getUserByID(userID);
+        if (!isError && data)
+          posts.push({
+            ...rests,
+            userAvatar: data.avatar,
+            userName: `${data.firstName} ${data.lastName}`,
+            userID,
+          });
+      }
+    }
 
-    const q = query(usersRef, orderBy('timestamp', 'desc'));
-
-    const unsubscribe = onSnapshot(
-      q,
-      (querySnapshot) => {
-        let posts: PostModal[] = [];
-        querySnapshot.forEach((doc) => {
-          doc.exists() && posts.push(doc.data() as PostModal);
-        });
-
-        posts = [
-          ...posts.map((item) => {
-            const post = item as PostModal;
-            const { body, userID, imageUrl, timestamp } = post;
-
-            return {
-              userID: userID,
-              body,
-              imageUrl,
-              id: item.id,
-              timestamp,
-            } as PostModal;
-          }),
-        ];
-        callback({
-          isError: false,
-          data: (posts as PostModal[]) || undefined,
-          message: 'ok',
-        });
-      },
-      (error) => console.log(error)
-    );
-
-    return unsubscribe;
+    return {
+      isError: false,
+      data: posts,
+      message: '',
+    } as const;
   } catch (error) {
-    console.log('🚀 ~ file: post.ts:36 ~ getAllPost ~ error', error);
+    console.log('🚀 ~ file: post.ts:99 ~ getAllPost ~ error', error);
   }
+
+  return {
+    isError: true,
+    data: undefined,
+    message: '',
+  } as const;
 };
 
-export const getAllPost = (
+export const getNewPosts = async (
   callback: ({
-    isError = false,
+    isError = true,
     data = undefined,
     message = '',
   }: ServiceResult<PostModal[]>) => void
 ) => {
-  try {
-    const posts: PostModal[] = [];
-    const unsubscribe = getPosts(async ({ isError, data }) => {
-      if (!isError && data) {
-        for await (const { userID, ...rests } of data) {
-          const { isError, data } = await getUserByID(userID);
-          if (!isError && data)
-            posts.push({
-              ...rests,
-              userAvatar: data.avatar,
-              userName: `${data.firstName} ${data.lastName}`,
-              userID,
-            });
-        }
-      }
+  const usersRef = collection(firestore, 'posts');
+  const q = query(usersRef, orderBy('timestamp', 'desc'));
+  const unsubscribe = onSnapshot(
+    q,
+    async (querySnapshot) => {
+      const newPosts: PostModal[] = [];
 
+      for await (const doc of querySnapshot.docs) {
+        const { userID, ...rests } = doc.data() as PostModal;
+        const { isError, data } = await getUserByID(userID);
+        if (!isError && data)
+          newPosts.push({
+            ...rests,
+            userAvatar: data.avatar,
+            userName: `${data.firstName} ${data.lastName}`,
+            userID,
+          });
+      }
       callback({
         isError: false,
-        data: posts,
+        data: newPosts,
         message: '',
       });
+    },
+    (e) => console.log(e)
+  );
+
+  return { unsubscribe } as const;
+};
+
+const getPosts = async () => {
+  try {
+    const usersRef = collection(firestore, 'posts');
+
+    const q = query(usersRef, orderBy('timestamp', 'desc'));
+    const querySnapshot = await getDocs(q);
+
+    let posts: PostModal[] = [];
+    querySnapshot.forEach((doc) => {
+      doc.exists() && posts.push(doc.data() as PostModal);
     });
 
-    return unsubscribe;
+    posts = [
+      ...posts.map((item) => {
+        const post = item as PostModal;
+        const { body, userID, imageUrl, timestamp } = post;
+
+        return {
+          userID: userID,
+          body,
+          imageUrl,
+          id: item.id,
+          timestamp,
+        } as PostModal;
+      }),
+    ];
+    return {
+      isError: false,
+      data: posts as PostModal[],
+      message: 'ok',
+    } as const;
   } catch (error) {
-    console.log('🚀 ~ file: post.ts:99 ~ getAllPost ~ error', error);
+    console.log('🚀 ~ file: post.ts:36 ~ getAllPost ~ error', error);
   }
+
+  return {
+    isError: true,
+    data: undefined,
+    message: 'not ok',
+  } as const;
 };

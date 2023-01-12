@@ -1,40 +1,48 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { memo, useCallback, useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import classNames from 'classnames';
+import { useKeyPressHandler } from 'hooks-react-custom';
+import React, { memo, useCallback, useState } from 'react';
 
 import Button from 'components/Button';
-import { IconCloseLg, IconImage, IconLoading } from 'components/icon';
-import dynamic from 'next/dynamic';
-const Image = dynamic(() => import('components/Image'), { ssr: false });
-import MyEditor from 'components/MyEditor';
-import PostImage from './PostImage';
-import fakeData from 'utils/constants/fakeData';
-import { useAuth } from 'context/AuthContext';
+import { IconCloseLg, IconLoading } from 'components/icon';
 import { uploadPost } from 'services/post';
-import { toastAlert } from '../ToastAlert/index';
 import { uploadImage } from 'services/image';
+import { useAuth } from 'context/AuthContext';
+
+import PostImage from './PostImage';
+import { toastAlert } from '../ToastAlert/index';
+
+const TextEditor = dynamic(() => import('components/TextEditor'), {
+  ssr: false,
+});
+const Image = dynamic(() => import('components/Image'), { ssr: false });
 
 interface PopupProps {
-  visible?: boolean;
+  visible: boolean;
   openWithImage?: boolean;
-  setVisible?: (visible: boolean) => void;
+  setVisible: (visible: boolean) => void;
 }
 
 function Popup(props: PopupProps) {
   const { visible = false, openWithImage = false, setVisible } = props;
 
   const {} = useAuth();
-  const [value, setValue] = useState<string | undefined>();
-  const [fileImage, setFileImage] = useState();
+  const [valueEditor, setValueEditor] = useState<string>();
+  const [fileImage, setFileImage] = useState<any>();
   const [pendingPost, setPendingPost] = useState(false);
 
   const { currentUser } = useAuth();
 
+  const handleTextEditorChange = useCallback(
+    (value: string) => setValueEditor(value),
+    []
+  );
+
   const handleUploadPost = async () => {
     setPendingPost(true);
-
     try {
-      if (value) {
+      if ((valueEditor && valueEditor !== '') || fileImage) {
         let urlImg = null;
         if (fileImage) {
           const { imageUrl } = await uploadImage({
@@ -45,12 +53,22 @@ function Popup(props: PopupProps) {
         }
         const { data, isError, message } = await uploadPost({
           userID: currentUser?.id || '',
-          body: value,
+          body: valueEditor || null,
           imageUrl: urlImg,
         });
         toastAlert({
           type: !isError && data ? 'success' : 'error',
           message: message,
+        });
+        if (!isError && data) {
+          setValueEditor('');
+          setFileImage(null);
+          setVisible?.(false);
+        }
+      } else {
+        toastAlert({
+          type: 'error',
+          message: 'Bài viết không được để trống.',
         });
       }
     } catch (error) {
@@ -100,10 +118,14 @@ function Popup(props: PopupProps) {
             </div>
             <div className="max-h-[400px] overflow-y-auto">
               <div className="mx-[16px] py-4">
-                <MyEditor setValue={setValue} />
+                <TextEditor
+                  value={valueEditor}
+                  onChange={handleTextEditorChange}
+                />
               </div>
               <div className="my-2 mx-4">
                 <PostImage
+                  file={fileImage}
                   showPostImg={openWithImage}
                   setImage={setFileImage}
                 />
@@ -118,7 +140,7 @@ function Popup(props: PopupProps) {
                 className="h-[36px] bg-primaryButtonBackground text-white w-full text-[14px] font-[600] px-[12px]"
                 onClick={handleUploadPost}
               >
-                Đăng{' '}
+                Đăng
                 {pendingPost && (
                   <div className="w-4 h-4 ml-2">
                     <IconLoading />

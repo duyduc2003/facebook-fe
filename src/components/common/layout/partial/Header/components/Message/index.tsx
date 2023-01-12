@@ -9,9 +9,11 @@ import {
   IconPostSmall,
 } from 'components/icon';
 import Button from 'components/Button';
-import ListMessage from './ListMessage';
+import ListMessage from '../../../../../../ListMessage';
 import SearchMessage from './SearchMessage';
 import styles from './message.module.scss';
+import Link from 'next/link';
+import { routes } from 'utils/constants/common';
 
 interface indexProps {}
 
@@ -41,16 +43,18 @@ export default function Message(props: indexProps) {
           >
             <Icon3Dot />
           </Button>
-          <Button
-            rounded
-            overlay
-            className={classNames(
-              'w-[32px] h-[32px] text-secondaryText',
-              styles.filterImg
-            )}
-          >
-            <IconOpenMessage />
-          </Button>
+          <Link href={routes.MESSENGER}>
+            <Button
+              rounded
+              overlay
+              className={classNames(
+                'w-[32px] h-[32px] text-secondaryText',
+                styles.filterImg
+              )}
+            >
+              <IconOpenMessage />
+            </Button>
+          </Link>
           <Button
             rounded
             overlay

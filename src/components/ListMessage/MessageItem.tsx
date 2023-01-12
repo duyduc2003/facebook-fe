@@ -3,11 +3,10 @@ import { IconSeen } from 'components/icon';
 import React from 'react';
 /* eslint-disable @next/next/no-img-element */
 import classNames from 'classnames';
+import Image from 'components/Image';
 
 interface MessageItemProps {
-  nickname?: string;
-  lastName: string;
-  firstName: string;
+  fullName: string;
   avatar: string;
   body: string;
   statusSend: 'iSend' | 'youSend';
@@ -17,9 +16,7 @@ interface MessageItemProps {
 
 export default function MessageItem(props: MessageItemProps) {
   const {
-    nickname = '',
-    lastName = '',
-    firstName = '',
+    fullName = '',
     avatar = '',
     body = '',
     statusSend = 'iSend',
@@ -39,8 +36,8 @@ export default function MessageItem(props: MessageItemProps) {
       className="mx-[8px] p-[8px] flex items-center overflow-hidden"
       onClick={onClick}
     >
-      <div className="min-w-[56px] w-[56px] h-[56px] rounded-[50%] overflow-hidden mr-[12px]">
-        <img src={avatar} alt="" className="w-full h-full object-contain" />
+      <div className="min-w-[56px] w-[56px] h-[56px] mr-[12px]">
+        <Image src={avatar} alt="" className="" rounded />
       </div>
       <div className="flex-1">
         <p className="text-left mb-[8px] whitespace-nowrap truncate text-primaryText text-[14px] font-[400] leading-[18.6px] break-words select-none ">
@@ -50,7 +47,7 @@ export default function MessageItem(props: MessageItemProps) {
               youSend_NotSeen && 'font-[500]'
             )}
           >
-            {nickname ? nickname : `${firstName} ${lastName}`}
+            {fullName}
           </span>
         </p>
         <p className="text-left text-secondaryText text-[12px] font-[400] leading-[14.7px] flex items-center truncate select-none">
@@ -75,8 +72,8 @@ export default function MessageItem(props: MessageItemProps) {
           </span>
         )}
         {iSend_Seen && (
-          <div className="w-[16px] h-[16px] rounded-[50%] overflow-hidden mr-[8px]">
-            <img src={avatar} alt="" className="w-full h-full object-contain" />
+          <div className="w-[16px] h-[16px] mr-[8px]">
+            <Image src={avatar} alt="" rounded />
           </div>
         )}
       </div>

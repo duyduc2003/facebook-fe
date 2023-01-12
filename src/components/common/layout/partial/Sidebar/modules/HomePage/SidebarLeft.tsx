@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import React from 'react';
+import React, { memo } from 'react';
 
 import Button from 'components/Button';
 import SidebarItem from '../../SidebarItem';
@@ -10,7 +10,7 @@ import { useAuth } from 'context/AuthContext';
 
 interface SidebarLeftProps {}
 
-export default function SidebarLeft(props: SidebarLeftProps) {
+export default memo(function SidebarLeft(props: SidebarLeftProps) {
   const {} = props;
 
   const { currentUser } = useAuth();
@@ -22,8 +22,8 @@ export default function SidebarLeft(props: SidebarLeftProps) {
         title={`${currentUser?.firstName} ${currentUser?.lastName}` || ''}
         href="#"
       />
-      <SidebarItem icon={<IconFriend />} title="Bạn bè" href={routes.FRIEND} />
-      <SidebarItem icon={<IconGroup />} title="Nhóm" href={routes.GROUP} />
+      {/* <SidebarItem icon={<IconFriend />} title="Bạn bè" href={routes.FRIEND} />
+      <SidebarItem icon={<IconGroup />} title="Nhóm" href={routes.GROUP} /> */}
       <SidebarItem
         icon={<IconMessageColor />}
         title="Messenger"
@@ -31,4 +31,4 @@ export default function SidebarLeft(props: SidebarLeftProps) {
       />
     </div>
   );
-}
+});

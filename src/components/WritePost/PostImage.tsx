@@ -8,11 +8,12 @@ import Input from 'components/Input';
 
 interface PostImageProps {
   showPostImg?: boolean;
-  setImage?: React.Dispatch<any>;
+  setImage: React.Dispatch<any>;
+  file: any;
 }
 
 export default function PostImage(props: PostImageProps) {
-  const { showPostImg = false, setImage } = props;
+  const { showPostImg = false, setImage, file } = props;
 
   const [showWrapImg, setShowWrapImg] = useState(showPostImg || false);
   const [inputFile, setInputFile] = useState<any>();
@@ -58,6 +59,13 @@ export default function PostImage(props: PostImageProps) {
   useEffect(() => {
     setShowWrapImg(showPostImg);
   }, [showPostImg]);
+
+  useEffect(() => {
+    if (file === null) {
+      setInputFile(null);
+      setShowWrapImg(false);
+    }
+  }, [file]);
 
   return (
     <div className="my-4">

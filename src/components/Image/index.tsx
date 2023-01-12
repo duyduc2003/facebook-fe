@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import classNames from 'classnames';
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 
 import placeholderImg from 'assets/image/placeholderImg.png';
 import { useBrowserLayoutEffect } from 'hooks/useBrowserLayoutEffect';
@@ -13,7 +13,7 @@ interface ImageProps {
   fallback?: string;
 }
 
-export default function Image(props: ImageProps) {
+export default memo(function Image(props: ImageProps) {
   const {
     src,
     alt,
@@ -30,7 +30,7 @@ export default function Image(props: ImageProps) {
   if (rounded) {
     if (typeof rounded === 'boolean') {
       _style.borderRadius = '50%';
-      _class = 'w-full h-full object-contain';
+      _class = 'w-full h-full object-cover';
     } else _style.borderRadius = rounded;
   }
 
@@ -54,4 +54,4 @@ export default function Image(props: ImageProps) {
       onError={handleImgError}
     />
   );
-}
+});

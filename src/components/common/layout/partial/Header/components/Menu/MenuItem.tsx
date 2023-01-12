@@ -2,21 +2,30 @@ import Button from 'components/Button';
 import { IconPost } from 'components/icon';
 import Link from 'next/link';
 import React, { ReactNode } from 'react';
+import { TypeOnClickBtn } from '../../../../../../Button/index';
 
 export interface MenuItemProps {
-  link: string;
+  link?: string;
   title: string;
   description: string;
   icon: ReactNode;
   horizontal?: boolean;
+  onClick?: TypeOnClickBtn;
 }
 
 export default function MenuItem(props: MenuItemProps) {
-  const { link, icon, description, title } = props;
+  const { link, icon, description, title, onClick } = props;
+
+  const Wrap: any = link ? Link : 'div';
 
   return (
-    <Link href={link}>
-      <Button overlay rounded="8px" className="flex px-[8px] w-full">
+    <Wrap href={link}>
+      <Button
+        overlay
+        rounded="8px"
+        className="flex px-[8px] w-full"
+        onClick={onClick}
+      >
         <div className="w-[36px] h-[36px] my-[6px] mr-[12px] bg-secondaryButtonBackground rounded-[50%] flex items-center justify-center">
           {icon}
         </div>
@@ -29,6 +38,6 @@ export default function MenuItem(props: MenuItemProps) {
           </p>
         </div>
       </Button>
-    </Link>
+    </Wrap>
   );
 }

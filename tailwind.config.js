@@ -57,7 +57,7 @@ module.exports = {
       disabledIcon: '#BCC0C4',
       divider: '#CED0D4',
       overlayAlpha80: 'rgba(244, 244, 244, 0.8)',
-
+      shadow2: 'rgba(0, 0, 0, 0.2)'
     }),
     columns: {
       auto: 'auto',
