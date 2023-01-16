@@ -17,18 +17,30 @@ export default memo(function SidebarLeft(props: SidebarLeftProps) {
 
   return (
     <div className="mt-[16px] pl-[8px]">
-      <SidebarItem
-        avatar={currentUser?.avatar || ''}
-        title={`${currentUser?.firstName} ${currentUser?.lastName}` || ''}
-        href={`/${currentUser?.id}`}
-      />
-      {/* <SidebarItem icon={<IconFriend />} title="Bạn bè" href={routes.FRIEND} />
-      <SidebarItem icon={<IconGroup />} title="Nhóm" href={routes.GROUP} /> */}
-      <SidebarItem
-        icon={<IconMessageColor />}
-        title="Messenger"
-        href={routes.MESSENGER}
-      />
+      {currentUser ? (
+        <>
+          <SidebarItem
+            avatar={currentUser?.avatar || ''}
+            title={`${currentUser?.firstName} ${currentUser?.lastName}` || ''}
+            href={`/${currentUser?.id}`}
+          />
+          {/* <SidebarItem icon={<IconFriend />} title="Bạn bè" href={routes.FRIEND} />
+        <SidebarItem icon={<IconGroup />} title="Nhóm" href={routes.GROUP} /> */}
+          <SidebarItem
+            icon={<IconMessageColor />}
+            title="Messenger"
+            href={routes.MESSENGER}
+          />
+        </>
+      ) : (
+        <>
+          <SidebarItem
+            // icon={<IconMessageColor />}
+            title="Đăng nhập"
+            href={routes.AUTH.LOGIN}
+          />
+        </>
+      )}
     </div>
   );
 });
