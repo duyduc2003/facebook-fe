@@ -6,10 +6,26 @@ import {
   getDocs,
   query,
   where,
+  updateDoc,
 } from 'firebase/firestore';
 import { ID } from 'interfaces/common';
 import { UserModel } from '../interfaces/auth';
 import { ServiceResult } from '../interfaces/common';
+
+export const updateAvatarUser = async (userID: ID, urlAvatar: string) => {
+  console.log(
+    '🚀 ~ file: user.ts:16 ~ updateAvatarUser ~ urlAvatar',
+    urlAvatar
+  );
+  try {
+    const ref = doc(firestore, 'users', userID);
+    await updateDoc(ref, {
+      avatar: urlAvatar,
+    });
+  } catch (error) {
+    console.log('🚀 ~ file: user.ts:19 ~ updateAvatarUser ~ error', error);
+  }
+};
 
 export const getUserByID = async (id: ID) => {
   try {
@@ -40,26 +56,36 @@ export const getUserByID = async (id: ID) => {
   } as ServiceResult<UserModel>;
 };
 
-export const searchUser = async (searchKey: string) => {
+export const searchUser = async () => {
   try {
     const usersRef = collection(firestore, 'users');
-    const queryFirstName = query(
-      usersRef,
-      where('firstName', 'array-contains', searchKey)
-    );
-    const queryLastName = query(
-      usersRef,
-      where('lastName', 'array-contains', searchKey)
-    );
-    const snapshotFirstName = await getDocs(queryFirstName);
-    const snapshotLastName = await getDocs(queryLastName);
-    console.log(123);
+    const queryUser = query(usersRef);
 
-    if (!snapshotFirstName.empty || !snapshotLastName.empty) {
-      const users = snapshotFirstName.docs;
-      console.log('🚀 ~ file: user.ts:53 ~ searchUser ~ users', users);
+    const snapshotUser = await getDocs(queryUser);
+
+    let users: UserModel[] = [];
+    if (!snapshotUser.empty) {
+      snapshotUser.forEach((item) => {
+        item.exists() &&
+          users.push({
+            ...(item.data() as UserModel),
+            id: item.id,
+          });
+      });
     }
+
+    return {
+      isError: false,
+      data: users,
+      message: '',
+    } as const;
   } catch (error) {
     console.log('🚀 ~ file: user.ts:40 ~ searchUser ~ error', error);
   }
+
+  return {
+    isError: true,
+    data: [] as UserModel[],
+    message: "Can't load user",
+  } as const;
 };

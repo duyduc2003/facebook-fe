@@ -26,13 +26,13 @@ export const uploadPost = async (data: PostModal) => {
         isError: false,
         data: result.id,
         message: 'Bài viết đã được đăng',
-      } as ServiceResult<string>;
+      } as const;
     else
       return {
         isError: true,
         data: undefined,
         message: 'Bài viết đăng không thành công!',
-      } as ServiceResult<string>;
+      } as const;
   } catch (error) {
     console.log(' ~ file: auth.ts:10 ~ registerUser ~ error', error);
   }
@@ -41,7 +41,7 @@ export const uploadPost = async (data: PostModal) => {
     isError: true,
     data: undefined,
     message: 'Something wrong!',
-  } as ServiceResult<string>;
+  } as const;
 };
 
 export const getPostsAllField = async () => {
@@ -112,6 +112,47 @@ export const getNewPosts = async (
   );
 
   return { unsubscribe } as const;
+};
+
+export const getPostsByUserID = async (userID: ID) => {
+  try {
+    const usersRef = collection(firestore, 'posts');
+    const q = query(usersRef, where('userID', '==', userID));
+    const querySnapshot = await getDocs(q);
+    let posts: PostModal[] = [];
+    querySnapshot.forEach((doc) => {
+      doc.exists() && posts.push(doc.data() as PostModal);
+    });
+
+    posts = [
+      ...posts.map((item) => {
+        const post = item as PostModal;
+        const { body, userID, imageUrl, timestamp } = post;
+
+        return {
+          userID: userID,
+          body,
+          imageUrl,
+          id: item.id,
+          timestamp,
+        } as PostModal;
+      }),
+    ];
+
+    return {
+      isError: false,
+      data: posts as PostModal[],
+      message: 'ok',
+    } as const;
+  } catch (error) {
+    console.log('🚀 ~ file: post.ts:121 ~ getPostsByUserID ~ error', error);
+  }
+
+  return {
+    isError: true,
+    data: undefined,
+    message: 'not ok',
+  } as const;
 };
 
 const getPosts = async () => {

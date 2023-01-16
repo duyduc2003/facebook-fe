@@ -20,7 +20,7 @@ export default memo(function SidebarLeft(props: SidebarLeftProps) {
       <SidebarItem
         avatar={currentUser?.avatar || ''}
         title={`${currentUser?.firstName} ${currentUser?.lastName}` || ''}
-        href="#"
+        href={`/${currentUser?.id}`}
       />
       {/* <SidebarItem icon={<IconFriend />} title="Bạn bè" href={routes.FRIEND} />
       <SidebarItem icon={<IconGroup />} title="Nhóm" href={routes.GROUP} /> */}

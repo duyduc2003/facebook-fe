@@ -1,9 +1,14 @@
-import React, { useId, useState } from 'react';
+import React, { useCallback, useEffect, useId, useMemo, useState } from 'react';
 import classNames from 'classnames';
-import { useInputText } from 'hooks-react-custom';
+import { useAsync, useDebounce, useInputText } from 'hooks-react-custom';
 import Link from 'next/link';
 
-import { IconArrowLeft, IconFB, IconSearch } from 'components/icon';
+import {
+  IconArrowLeft,
+  IconFB,
+  IconLoading,
+  IconSearch,
+} from 'components/icon';
 import { HeadlessTippy } from 'components/Popper';
 import WrapPopper from 'components/Popper/WrapPopper';
 import Button from 'components/Button';
@@ -11,6 +16,8 @@ import { routes } from 'utils/constants/common';
 
 import styles from './search.module.scss';
 import AccountSearch from 'components/AccountSearch';
+import { searchUser } from 'services/user';
+import { UserModel } from 'interfaces/auth';
 
 const cx = classNames.bind(styles);
 
@@ -20,19 +27,45 @@ export default function Search(props: SearchProps) {
   const {} = props;
 
   const inputText = useInputText('');
+  const { execute, error, status, value } = useAsync(searchUser, false);
 
   const [showPopperSearch, setShowPopperSearch] = useState<boolean>(false);
-  console.log(inputText.value);
+  const [pending, setPending] = useState<boolean>(false);
+  const [accounts, setAccounts] = useState<UserModel[]>([]);
+
+  const { debouncedValue, isPending } = useDebounce<string>(inputText.value);
+
+  const accountsResult: UserModel[] = useMemo(
+    () =>
+      accounts.filter(
+        (acc) =>
+          acc.firstName
+            ?.toLowerCase()
+            .includes(debouncedValue?.toLowerCase()) ||
+          acc.lastName?.toLowerCase().includes(debouncedValue?.toLowerCase()) ||
+          acc.email?.toLowerCase().includes(debouncedValue?.toLowerCase())
+      ),
+    [debouncedValue]
+  );
 
   const inputID = useId();
 
-  const handleInputFocus = () => {
+  const handleInputFocus = useCallback(() => {
     setShowPopperSearch(true);
-  };
+  }, []);
 
-  const handleCloseSearch = () => {
+  const handleCloseSearch = useCallback(() => {
     setShowPopperSearch(false);
-  };
+  }, []);
+
+  useEffect(() => {
+    if (status === 'pending') {
+      setPending(true);
+    } else if (status === 'success') {
+      setAccounts(value?.data || []);
+      setPending(false);
+    }
+  }, [status]);
 
   const render = (attr: any) => (
     <WrapPopper
@@ -43,10 +76,25 @@ export default function Search(props: SearchProps) {
       )}
     >
       <div className="py-[16px] px-[8px] flex flex-col text-left">
-        <AccountSearch iconClose />
-        <AccountSearch iconClose />
-        <AccountSearch iconClose />
-        <AccountSearch iconClose />
+        {pending || isPending ? (
+          <div className="flex justify-center items-center h-full">
+            <div className="w-4 h-4">
+              <IconLoading />
+            </div>
+          </div>
+        ) : (
+          <>
+            {accountsResult.map(({ avatar, firstName, lastName, id }) => (
+              <AccountSearch
+                avatar={avatar || ''}
+                fullName={`${firstName || ''} ${lastName || ''}`}
+                link={`/${id}`}
+                key={id}
+                onClick={handleCloseSearch}
+              />
+            ))}
+          </>
+        )}
       </div>
     </WrapPopper>
   );
@@ -65,6 +113,7 @@ export default function Search(props: SearchProps) {
         offset={[0, -1]}
         onClickOutside={handleCloseSearch}
         render={render}
+        onMount={execute}
       >
         <div
           className={cx(
@@ -107,7 +156,7 @@ export default function Search(props: SearchProps) {
             >
               <IconSearch />
             </label>
-            <div className="flex-1 h-full">
+            <label htmlFor={inputID} className="flex-1 h-full cursor-pointer">
               <input
                 id={inputID}
                 type="text"
@@ -121,7 +170,7 @@ export default function Search(props: SearchProps) {
                 onFocus={handleInputFocus}
                 {...inputText}
               />
-            </div>
+            </label>
           </div>
         </div>
       </HeadlessTippy>

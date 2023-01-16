@@ -16,6 +16,8 @@ import { useAuth } from 'context/AuthContext';
 import { useAppSelector, useAppDispatch } from 'hooks/redux';
 import { selectors, actions } from './writePostState';
 import { useKeyPressHandler } from 'hooks-react-custom';
+import { useRouter } from 'next/router';
+import { routes } from 'utils/constants/common';
 
 const Image = dynamic(() => import('components/Image'), { ssr: false });
 
@@ -28,6 +30,8 @@ export default memo(function WritePost() {
 
   const { currentUser, handleRedirectLogin } = useAuth();
 
+  const router = useRouter();
+
   useKeyPressHandler('h', (e) => {
     setShowPopup(true);
   });
@@ -35,11 +39,11 @@ export default memo(function WritePost() {
     setShowPopup(false);
   });
 
-  const handleClickInput = useCallback(() => {
+  const handleClickInput = () => {
+    handleRedirectLogin();
     setOpenWithPostImg(false);
     setShowPopup(true);
-    handleRedirectLogin();
-  }, []);
+  };
 
   const handleClickPostWithImage = useCallback(() => {
     setOpenWithPostImg(true);
@@ -80,7 +84,7 @@ export default memo(function WritePost() {
             >
               <input
                 type="text"
-                placeholder="Đức, bạn đang nghĩ gì thế?"
+                placeholder={`${currentUser?.lastName}, bạn đang nghĩ gì thế?`}
                 className="bg-transparent w-full h-full px-4"
               />
             </Button>
