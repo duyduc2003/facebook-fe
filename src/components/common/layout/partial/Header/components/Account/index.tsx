@@ -10,6 +10,7 @@ import { routes } from 'utils/constants/common';
 import fakeData from 'utils/constants/fakeData';
 
 import { useAuth } from 'context/AuthContext';
+import Link from 'next/link';
 const Image = dynamic(() => import('components/Image'), { ssr: false });
 
 interface AccountProps {}
@@ -40,23 +41,26 @@ export default function Account(props: AccountProps) {
       className="py-[8px] px-[8px] w-[320px] rounded-[8px] shadow-[rgba(0,0,0,0.2)_0px_3px_10px] max-w-[320px]"
     >
       <div className="">
-        <Button
-          rounded="8px"
-          overlay
-          className="w-full p-[8px] flex items-center"
-        >
-          <div className="min-w-[36px] w-[36px] h-[36px] mr-[12px]">
-            <Image
-              src={currentUser?.avatar || ''}
-              alt=""
-              className="w-full h-full rounded-[50%]"
-              rounded
-            />
-          </div>
-          <div className="text-primaryText text-[15px] font-[500] break-words select-none ">
-            {`${currentUser?.firstName} ${currentUser?.lastName}` || ''}
-          </div>
-        </Button>
+        <Link href={`/${currentUser?.id}`}>
+          <Button
+            rounded="8px"
+            overlay
+            className="w-full p-[8px] flex items-center"
+            onClick={handleClose}
+          >
+            <div className="min-w-[36px] w-[36px] h-[36px] mr-[12px]">
+              <Image
+                src={currentUser?.avatar || ''}
+                alt=""
+                className="w-full h-full rounded-[50%]"
+                rounded
+              />
+            </div>
+            <div className="text-primaryText text-[15px] font-[500] break-words select-none ">
+              {`${currentUser?.firstName} ${currentUser?.lastName}` || ''}
+            </div>
+          </Button>
+        </Link>
       </div>
       <hr className="my-[8px] mx-[8px]" />
       <div>

@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import dynamic from 'next/dynamic';
 import classNames from 'classnames';
-import { useKeyPressHandler } from 'hooks-react-custom';
+import { useAsync, useKeyPressHandler } from 'hooks-react-custom';
 import React, { memo, useCallback, useState } from 'react';
 
 import Button from 'components/Button';
@@ -113,7 +113,9 @@ function Popup(props: PopupProps) {
                 <Image src={currentUser?.avatar || ''} alt="" rounded />
               </div>
               <div className="text-primaryText text-[14px] font-[500]">
-                {`${currentUser?.firstName} ${currentUser?.lastName}` || ''}
+                {`${currentUser?.firstName || ''} ${
+                  currentUser?.lastName || ''
+                }`}
               </div>
             </div>
             <div className="max-h-[400px] overflow-y-auto">

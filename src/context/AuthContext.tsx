@@ -33,7 +33,7 @@ const authContextState: AuthContextState = {
   saveUser: null,
   logout: null,
   handleRedirectLogin() {
-    return null;
+    console.log('Empty');
   },
 };
 
@@ -73,12 +73,12 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   }, []);
 
   const logout = useCallback(() => {
+    router.push(routes.AUTH.LOGIN);
     saveAuth(undefined);
     saveUser(undefined);
-    router.push(routes.AUTH.LOGIN);
   }, []);
 
-  const handleRedirectLogin = () => {
+  const handleRedirectLogin = useCallback(() => {
     if (window !== undefined) {
       if (router?.pathname && router?.pathname !== routes.AUTH.LOGIN) {
         setRedirectPath(router.asPath);
@@ -87,7 +87,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     if (!currentUser) {
       router.push(routes.AUTH.LOGIN);
     }
-  };
+  }, [currentUser]);
 
   const values: AuthContextState = useMemo(
     () => ({

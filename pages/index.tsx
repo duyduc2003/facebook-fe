@@ -15,11 +15,6 @@ import ListPosted from 'components/ListPosted';
 import { searchUser } from 'services/user';
 
 function Home() {
-  useEffect(() => {
-    (async () => {
-      await searchUser('d');
-    })();
-  }, []);
   return (
     <>
       <Head>

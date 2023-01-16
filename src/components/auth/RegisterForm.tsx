@@ -187,12 +187,11 @@ export default function RegisterForm(props: RegisterFormProps) {
           rounded="6px"
           className="bg-[#42b72a] text-white font-[500] px-[16px] text-[17px] sm:max-w-[194px]  w-full h-[36px] "
         >
-          {loading ? (
-            <div className="w-6 h-6">
+          Đăng ký
+          {loading && (
+            <div className="w-3 h-3 ml-2">
               <IconLoading />
             </div>
-          ) : (
-            'Đăng ký'
           )}
         </Button>
       </div>

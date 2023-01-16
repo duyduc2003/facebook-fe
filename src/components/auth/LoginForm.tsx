@@ -34,12 +34,12 @@ export default function LoginForm() {
     LOCAL_REDIRECT_PATH,
     routes.HOME
   );
+  console.log('🚀 ~ file: LoginForm.tsx:37 ~ LoginForm ~ redirect', redirect);
   const router = useRouter();
 
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm<LoginModal>({
     mode: 'onBlur',
@@ -104,12 +104,11 @@ export default function LoginForm() {
         primary
         disabled={loading}
       >
-        {loading ? (
-          <div className="w-8 h-8">
+        Đăng nhập
+        {loading && (
+          <div className="w-4 h-4 ml-2">
             <IconLoading />
           </div>
-        ) : (
-          'Đăng nhập'
         )}
       </Button>
     </form>

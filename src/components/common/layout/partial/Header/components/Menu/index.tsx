@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 
 import Button from 'components/Button';
@@ -28,18 +28,24 @@ export default function Menu() {
     setShowMenu(false);
   };
 
+  const handleClickBtnPost = useCallback(() => {
+    handleRedirectLogin();
+    if (router.pathname !== routes.HOME) router.push(routes.HOME);
+    console.log(
+      '🚀 ~ file: index.tsx:40 ~ Menu ~ router.pathname !== routes.HOME',
+      router.pathname !== routes.HOME
+    );
+    dispatch(actions.showPopupWritePost(true));
+    setShowMenu(false);
+  }, [handleRedirectLogin, router]);
+
   const menuItem: MenuItemProps[] = useMemo(
     () => [
       {
         title: 'Đăng',
         description: 'Chia sẻ bài viết trên Bảng tin.',
         icon: <IconPost />,
-        onClick: () => {
-          handleRedirectLogin();
-          if (router.pathname !== routes.HOME) router.push(routes.HOME);
-          dispatch(actions.showPopupWritePost(true));
-          setShowMenu(false);
-        },
+        onClick: handleClickBtnPost,
         // horizontal: true,
       },
       // {
@@ -55,7 +61,7 @@ export default function Menu() {
       //   icon: <IconPeopleGroupSmall />,
       // },
     ],
-    []
+    [handleClickBtnPost]
   );
 
   const render = (attr: any) => (
