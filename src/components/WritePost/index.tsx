@@ -30,10 +30,9 @@ export default memo(function WritePost() {
 
   const { currentUser, handleRedirectLogin } = useAuth();
 
-  const router = useRouter();
-
   useKeyPressHandler('h', (e) => {
-    setShowPopup(true);
+    handleRedirectLogin();
+    if (currentUser) setShowPopup(true);
   });
   useKeyPressHandler('esc', (e) => {
     setShowPopup(false);
@@ -41,14 +40,19 @@ export default memo(function WritePost() {
 
   const handleClickInput = () => {
     handleRedirectLogin();
-    setOpenWithPostImg(false);
-    setShowPopup(true);
+    if (currentUser) {
+      setOpenWithPostImg(false);
+      setShowPopup(true);
+    }
   };
 
-  const handleClickPostWithImage = useCallback(() => {
-    setOpenWithPostImg(true);
-    setShowPopup(true);
-  }, []);
+  const handleClickPostWithImage = () => {
+    handleRedirectLogin();
+    if (currentUser) {
+      setOpenWithPostImg(true);
+      setShowPopup(true);
+    }
+  };
 
   const setVisible = useCallback((visible: boolean) => {
     setShowPopup(visible);
@@ -67,14 +71,16 @@ export default memo(function WritePost() {
     <WrapPost>
       <div className="pt-[12px] px-4">
         <div className="flex items-center">
-          <div className="w-[40px] h-[40px] mr-4">
-            <Image
-              src={currentUser?.avatar || ''}
-              alt=""
-              className="w-full h-full rounded-[50%]"
-              rounded
-            />
-          </div>
+          {currentUser && (
+            <div className="w-[40px] h-[40px] mr-4">
+              <Image
+                src={currentUser?.avatar || ''}
+                alt=""
+                className="w-full h-full rounded-[50%]"
+                rounded
+              />
+            </div>
+          )}
           <div className="flex-1">
             <Button
               overlay
@@ -84,7 +90,11 @@ export default memo(function WritePost() {
             >
               <input
                 type="text"
-                placeholder={`${currentUser?.lastName}, bạn đang nghĩ gì thế?`}
+                placeholder={
+                  currentUser
+                    ? `${currentUser?.lastName}, bạn đang nghĩ gì thế?`
+                    : 'Đăng nhập để có thể đăng bài.'
+                }
                 className="bg-transparent w-full h-full px-4"
               />
             </Button>

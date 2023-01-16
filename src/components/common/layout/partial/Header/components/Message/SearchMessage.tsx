@@ -1,10 +1,13 @@
 import classNames from 'classnames';
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import AccountSearch from 'components/AccountSearch';
 import Button from 'components/Button';
-import { IconArrowLeft, IconSearch } from 'components/icon';
+import { IconArrowLeft, IconLoading, IconSearch } from 'components/icon';
 import { HeadlessTippy, WrapPopper } from 'components/Popper';
+import { UserModel } from 'interfaces/auth';
+import { useAsync, useDebounce, useInputText } from 'hooks-react-custom';
+import { searchUser } from 'services/user';
 
 interface SearchMessageProps {}
 
@@ -12,6 +15,26 @@ export default function SearchMessage(props: SearchMessageProps) {
   const {} = props;
 
   const [showSearchMess, setShowSearchMess] = useState(false);
+  const { execute, error, status, value } = useAsync(searchUser, false);
+  const [pending, setPending] = useState<boolean>(false);
+  const [accounts, setAccounts] = useState<UserModel[]>([]);
+
+  const inputText = useInputText('');
+
+  const { debouncedValue, isPending } = useDebounce<string>(inputText.value);
+
+  const accountsResult: UserModel[] = useMemo(
+    () =>
+      accounts.filter(
+        (acc) =>
+          acc.firstName
+            ?.toLowerCase()
+            .includes(debouncedValue?.toLowerCase()) ||
+          acc.lastName?.toLowerCase().includes(debouncedValue?.toLowerCase()) ||
+          acc.email?.toLowerCase().includes(debouncedValue?.toLowerCase())
+      ),
+    [debouncedValue]
+  );
 
   const handleInputFocus = () => {
     setShowSearchMess(true);
@@ -27,16 +50,37 @@ export default function SearchMessage(props: SearchMessageProps) {
       className="shadow-[0px_24px_29px_-7px_rgb(100_100_111_/_20%)] max-w-[calc(100vw_-_24px)] w-[360px] h-[60vh] !z-[99] rounded-[8px] overflow-y-auto"
     >
       <div className="flex flex-col py-[16px] px-[8px]">
-        <AccountSearch />
-        <AccountSearch />
-        <AccountSearch />
-        <AccountSearch />
-        <AccountSearch />
-        <AccountSearch />
-        <AccountSearch />
+        {pending || isPending ? (
+          <div className="flex justify-center items-center h-full">
+            <div className="w-4 h-4">
+              <IconLoading />
+            </div>
+          </div>
+        ) : (
+          <>
+            {accountsResult.map(({ avatar, firstName, lastName, id }) => (
+              <AccountSearch
+                avatar={avatar || ''}
+                fullName={`${firstName || ''} ${lastName || ''}`}
+                link={`/${id}`}
+                key={id}
+                onClick={handleCloseSearch}
+              />
+            ))}
+          </>
+        )}
       </div>
     </WrapPopper>
   );
+
+  useEffect(() => {
+    if (status === 'pending') {
+      setPending(true);
+    } else if (status === 'success') {
+      setAccounts(value?.data || []);
+      setPending(false);
+    }
+  }, [status]);
 
   return (
     <div className="mx-[8px]">
@@ -45,6 +89,7 @@ export default function SearchMessage(props: SearchMessageProps) {
         visible={showSearchMess}
         placement="bottom"
         render={render}
+        onMount={execute}
       >
         <div className="flex items-center">
           {showSearchMess && (
@@ -72,6 +117,7 @@ export default function SearchMessage(props: SearchMessageProps) {
                 className="bg-transparent font-[400] text-[15px] w-full h-full outline-none pl-[8px] pr-[16px] transition-all duration-300 ease-linear text-primaryText"
                 placeholder="Tìm kiếm trên Messenger"
                 onFocus={handleInputFocus}
+                {...inputText}
               />
             </div>
           </div>

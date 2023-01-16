@@ -53,13 +53,14 @@ function ListPost() {
     <>
       <LoadNewPost />
       {posts && posts.length > 0 ? (
-        posts.map(({ id, body, imageUrl, userAvatar, userName }, i) => (
+        posts.map(({ id, body, imageUrl, userAvatar, userName, userID }, i) => (
           <Posted
             key={`${id}-${body}-${i}`}
             avatar={userAvatar}
             fullName={userName || ''}
             img={imageUrl}
             content={body || ''}
+            userID={userID}
           />
         ))
       ) : pending ? (
