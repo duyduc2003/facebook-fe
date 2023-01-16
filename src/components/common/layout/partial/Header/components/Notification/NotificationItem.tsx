@@ -20,7 +20,7 @@ export default function NotificationItem(props: NotificationItemProps) {
       </div>
       <div className="flex-1">
         <p className="text-left line3-3dot max-w-[200px] break-words text-primaryText text-[14px] font-[400] leading-[18.6px] select-none">
-          Bạn có thông báo
+          Bạn có thông báo.
         </p>
       </div>
       <div></div>
