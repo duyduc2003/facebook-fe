@@ -1,5 +1,5 @@
 import React from 'react';
-import fakeData from 'utils/constants/fakeData';
+import fakeData from '@/utils/constants/fakeData';
 import MessageItem from './MessageItem';
 
 interface ListMessageProps {}

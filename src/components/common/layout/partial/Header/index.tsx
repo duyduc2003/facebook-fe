@@ -1,12 +1,12 @@
 import React from 'react';
 
-import borderHeaderIMG from 'assets/image/borderHeader.png';
+import borderHeaderIMG from '@/assets/image/borderHeader.png';
+import { routes } from '@/utils/constants/common';
+import { IconBookmark, IconBookmarkFill } from '@/components/icon';
 import Search from './components/Search';
 import Action from './components/ActionHeader';
 import Nav from './components/Nav';
 import LinkActive from './components/Nav/LinkActive';
-import { routes } from 'utils/constants/common';
-import { IconBookmark, IconBookmarkFill } from 'components/icon';
 
 interface HeaderProps {}
 

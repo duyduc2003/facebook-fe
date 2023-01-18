@@ -1,5 +1,15 @@
-export const AUTH_LOCAL = 'AUTH_LOCAL';
 export const LOCAL_REDIRECT_PATH = 'LOCAL_REDIRECT_PATH';
+
+export const breakpoint = {
+  s: '400px',
+  sm: '640px',
+  md: '768px',
+  custom_md: '897px',
+  lg: '1024px',
+  custom_lg: '1100px',
+  xl: '1260px',
+  '2xl': '1536px',
+};
 
 export const routes = {
   HOME: '/',
@@ -8,6 +18,7 @@ export const routes = {
   NOTIFICATIONS: '/notifications',
   FRIEND: '/friend',
   MESSENGER: '/messenger',
+  POST: '/post',
   AUTH: {
     LOGIN: '/auth/login',
   },

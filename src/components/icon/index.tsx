@@ -1,14 +1,15 @@
-import IconImg1 from 'assets/icon/Ke7e-p3wI9e.png';
-import IconImg2 from 'assets/icon/RYvLeDGTC6q.png';
-import IconImg3 from 'assets/icon/4KEldeIcFOd.png';
-import IconImg4 from 'assets/icon/MIo7E0in8hl.png';
-import IconImg5 from 'assets/icon/I3KNRL0nuKK.png';
-import IconImg6 from 'assets/icon/HXzKxrtoJSJ.png';
-import IconImg7 from 'assets/icon/sCJi_qZpjUV.png';
-import IconImg8 from 'assets/icon/fwJfS2s82lU.png';
-import IconImg9 from 'assets/icon/bojgYDxN3p_.png';
-import IconImg10 from 'assets/icon/N__gx8ZfytG.png';
-import IconImg11 from 'assets/icon/wpncSZqETub.png';
+import IconImg1 from '@/assets/icon/Ke7e-p3wI9e.png';
+import IconImg2 from '@/assets/icon/RYvLeDGTC6q.png';
+import IconImg3 from '@/assets/icon/4KEldeIcFOd.png';
+import IconImg4 from '@/assets/icon/MIo7E0in8hl.png';
+import IconImg5 from '@/assets/icon/I3KNRL0nuKK.png';
+import IconImg6 from '@/assets/icon/HXzKxrtoJSJ.png';
+import IconImg7 from '@/assets/icon/sCJi_qZpjUV.png';
+import IconImg8 from '@/assets/icon/fwJfS2s82lU.png';
+import IconImg9 from '@/assets/icon/bojgYDxN3p_.png';
+import IconImg10 from '@/assets/icon/N__gx8ZfytG.png';
+import IconImg11 from '@/assets/icon/wpncSZqETub.png';
+import IconImg12 from '@/assets/icon/Trw1faNnzNQ.png';
 
 interface IconProps {
   fill?: string;
@@ -480,4 +481,18 @@ export const IconLike = () => (
       fill="#0084ff"
     ></path>
   </svg>
+);
+
+export const IconTrash = () => (
+  <i
+    style={{
+      backgroundImage: `url(${IconImg12.src})`,
+      backgroundPosition: '0px -1172px',
+      backgroundSize: '26px 1492px',
+      width: '20px',
+      height: '20px',
+      backgroundRepeat: 'no-repeat',
+      display: 'inline-block',
+    }}
+  ></i>
 );

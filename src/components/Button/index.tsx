@@ -1,12 +1,12 @@
 import classNames from 'classnames';
 import React, { memo, ReactNode, useEffect, useState } from 'react';
 
-export type TypeOnClickBtn = (
-  event?: React.MouseEvent<
-    HTMLButtonElement | HTMLDivElement | HTMLLinkElement,
-    MouseEvent
-  >
-) => void;
+export type TypeEventClick = React.MouseEvent<
+  HTMLButtonElement | HTMLDivElement | HTMLLinkElement,
+  MouseEvent
+>;
+
+export type TypeOnClickBtn = (event?: TypeEventClick) => void;
 
 interface ButtonProps {
   target?: 'div' | 'button' | 'a';

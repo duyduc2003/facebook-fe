@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { AuthModel, UserModel } from 'interfaces/auth';
+import { AuthModel, UserModel } from '@/interfaces/auth';
 
 const AUTH_LOCAL_STORAGE_KEY = 'fb-auth';
 const USER_LOCAL_STORAGE_KEY = 'fb-user';

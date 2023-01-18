@@ -1,9 +1,10 @@
-import Button, { TypeOnClickBtn } from 'components/Button';
-import { IconSeen } from 'components/icon';
-import React from 'react';
 /* eslint-disable @next/next/no-img-element */
+import React from 'react';
 import classNames from 'classnames';
-import Image from 'components/Image';
+
+import Button, { TypeOnClickBtn } from '@/components/Button';
+import { IconSeen } from '@/components/icon';
+import Image from '@/components/Image';
 
 interface MessageItemProps {
   fullName: string;

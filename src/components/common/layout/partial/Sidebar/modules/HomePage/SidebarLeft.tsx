@@ -1,12 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { memo } from 'react';
 
-import Button from 'components/Button';
-import SidebarItem from '../../SidebarItem';
-import { IconFriend, IconGroup, IconMessageColor } from 'components/icon';
-import { routes } from 'utils/constants/common';
-import fakeData from 'utils/constants/fakeData';
-import { useAuth } from 'context/AuthContext';
+import Button from '@/components/Button';
+import SidebarItem from '@/components/common/layout/partial/Sidebar/SidebarItem';
+import { IconFriend, IconGroup, IconMessageColor } from '@/components/icon';
+import { routes } from '@/utils/constants/common';
+import fakeData from '@/utils/constants/fakeData';
+import { useAuth } from '@/context/AuthContext';
 
 interface SidebarLeftProps {}
 

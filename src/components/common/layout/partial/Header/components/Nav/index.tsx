@@ -7,8 +7,8 @@ import {
   IconPeopleGroupFill,
   IconPeopleGroup,
   IconBookmark,
-} from 'components/icon';
-import { routes } from 'utils/constants/common';
+} from '@/components/icon';
+import { routes } from '@/utils/constants/common';
 import LinkActive from './LinkActive';
 
 interface NavProps {}

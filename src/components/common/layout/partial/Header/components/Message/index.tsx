@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
+import Link from 'next/link';
 
-import AppTippy, { HeadlessTippy, WrapPopper } from 'components/Popper';
+import AppTippy, { HeadlessTippy, WrapPopper } from '@/components/Popper';
 import {
   Icon3Dot,
   IconMessage,
   IconOpenMessage,
   IconPostSmall,
-} from 'components/icon';
-import Button from 'components/Button';
-import ListMessage from '../../../../../../ListMessage';
+} from '@/components/icon';
+import Button from '@/components/Button';
+import ListMessage from '@/components/ListMessage';
+import { routes } from '@/utils/constants/common';
+
 import SearchMessage from './SearchMessage';
 import styles from './message.module.scss';
-import Link from 'next/link';
-import { routes } from 'utils/constants/common';
 
 interface indexProps {}
 
@@ -51,6 +52,7 @@ export default function Message(props: indexProps) {
                 'w-[32px] h-[32px] text-secondaryText',
                 styles.filterImg
               )}
+              onClick={() => setShowMess(false)}
             >
               <IconOpenMessage />
             </Button>

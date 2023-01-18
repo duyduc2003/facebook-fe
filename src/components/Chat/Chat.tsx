@@ -1,5 +1,6 @@
-import { useAuth } from 'context/AuthContext';
 import React from 'react';
+
+import { useAuth } from '@/context/AuthContext';
 import ChatItem from './ChatItem';
 
 interface ChatProps {}

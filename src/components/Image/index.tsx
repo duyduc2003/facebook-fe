@@ -2,8 +2,8 @@
 import classNames from 'classnames';
 import React, { memo, useEffect, useState } from 'react';
 
-import placeholderImg from 'assets/image/placeholderImg.png';
-import { useBrowserLayoutEffect } from 'hooks/useBrowserLayoutEffect';
+import placeholderImg from '@/assets/image/placeholderImg.png';
+import { useBrowserLayoutEffect } from '@/hooks/useBrowserLayoutEffect';
 
 interface ImageProps {
   src: string;

@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-import { RootState } from 'store';
-import { PostModal } from 'interfaces/post';
+import { RootState } from '@/store';
+import { PostModal } from '@/interfaces/post';
+import { ID } from '@/interfaces/common';
 
 interface PostsState {
   posts: PostModal[];
@@ -22,6 +23,9 @@ const postState = createSlice({
 
     addPosts(state, action: PayloadAction<PostModal[]>) {
       state.posts = [...action.payload, ...state.posts];
+    },
+    deletePostByID(state, action: PayloadAction<ID>) {
+      state.posts = state.posts.filter((p) => p.id !== action.payload);
     },
   },
 });

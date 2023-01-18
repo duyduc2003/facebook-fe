@@ -1,23 +1,27 @@
-import { useIsomorphicLayoutEffect } from 'hooks-react-custom';
+import { useIsomorphicLayoutEffect, usePrevious } from 'hooks-react-custom';
 import { Unsubscribe } from 'firebase/firestore';
 import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 
-import Button from 'components/Button';
-import WrapPost from 'components/WrapPost';
-import { getNewPosts } from 'services/post';
-import { PostModal } from 'interfaces/post';
-import { useAppDispatch } from 'hooks/redux';
+import Button from '@/components/Button';
+import WrapPost from '@/components/WrapPost';
+import { getNewPosts } from '@/services/post';
+import { PostModal } from '@/interfaces/post';
+import { useAppDispatch } from '@/hooks/redux';
 import { actions, selectors } from './PostState';
-import { useAppSelector } from '../../hooks/redux';
+import { useAppSelector } from '@/hooks/redux';
+import { useAuth } from '@/context/AuthContext';
 
 interface LoadNewPostProps {}
 
 function LoadNewPost(props: LoadNewPostProps) {
   const {} = props;
   const postsLocal = useAppSelector(selectors.selectPosts);
+
   const dispatch = useAppDispatch();
 
   const [NewPosts, setNewPosts] = useState<PostModal[]>([]);
+
+  const NewPostsPreviousLength = usePrevious(NewPosts.length);
 
   const sizeNewPosts = useMemo(
     () => Math.abs(postsLocal.length - NewPosts.length),
@@ -43,7 +47,7 @@ function LoadNewPost(props: LoadNewPostProps) {
     };
   }, []);
 
-  return sizeNewPosts > 0 ? (
+  return sizeNewPosts !== postsLocal.length && sizeNewPosts > 0 ? (
     <WrapPost className="my-4 !py-0">
       <Button
         className="py-3 flex justify-center items-center text-sm font-[500] bg-primaryButtonBackground text-white text-center w-full h-full"

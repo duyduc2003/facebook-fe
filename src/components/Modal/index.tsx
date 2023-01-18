@@ -1,6 +1,4 @@
 import classNames from 'classnames';
-import Button from 'components/Button';
-import { IconClose, IconCloseLg } from 'components/icon';
 import React, {
   memo,
   ReactNode,
@@ -8,8 +6,11 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { searchUser } from 'services/user';
-import { TypeOnClickBtn } from '../Button/index';
+
+import Button from '@/components/Button';
+import { IconClose, IconCloseLg } from '@/components/icon';
+import { getUsers } from '@/services/user';
+import { TypeOnClickBtn } from '@/components/Button';
 
 interface ModalPopupProps {
   visible?: boolean;

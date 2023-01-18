@@ -1,6 +1,6 @@
 import Head from 'next/head';
 
-import MainLayout from 'components/common/layout/MainLayout';
+import MainLayout from '@/components/common/layout/MainLayout';
 
 function Notifications() {
   return (

@@ -1,21 +1,21 @@
+import { useRouter } from 'next/router';
 import md5 from 'md5';
 import React, { useState } from 'react';
 import * as Yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import Button from 'components/Button';
-import Input from 'components/Input';
-import { LoginModal, UserModel } from 'interfaces/auth';
-import { loginUser, registerUser } from 'services/auth';
-import { IconLoading } from 'components/icon';
-import { ServiceResult } from 'interfaces/common';
-import { useAuth } from 'context/AuthContext';
+import Button from '@/components/Button';
+import Input from '@/components/Input';
+import { LoginModal, UserModel } from '@/interfaces/auth';
+import { loginUser, registerUser } from '@/services/auth';
+import { IconLoading } from '@/components/icon';
+import { ServiceResult } from '@/interfaces/common';
+import { useAuth } from '@/context/AuthContext';
 import { toastAlert } from '../ToastAlert/index';
-import useLocalStorage from 'hooks/useLocalStorage';
-import { LOCAL_REDIRECT_PATH } from 'utils/constants/common';
-import { routes } from '../../utils/constants/common';
-import { useRouter } from 'next/router';
+import useLocalStorage from '@/hooks/useLocalStorage';
+import { LOCAL_REDIRECT_PATH } from '@/utils/constants/common';
+import { routes } from '@/utils/constants/common';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()

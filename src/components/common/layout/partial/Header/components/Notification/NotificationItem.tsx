@@ -1,8 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 import classNames from 'classnames';
-import Button from 'components/Button';
-import Image from 'components/Image';
 import React from 'react';
+
+import Button from '@/components/Button';
+import Image from '@/components/Image';
 
 interface NotificationItemProps {}
 

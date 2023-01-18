@@ -3,13 +3,13 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import Button from 'components/Button';
-import Input from 'components/Input';
-import { UserModel } from 'interfaces/auth';
-import { registerUser } from 'services/auth';
-import { IconLoading } from 'components/icon';
+import Button from '@/components/Button';
+import Input from '@/components/Input';
+import { UserModel } from '@/interfaces/auth';
+import { registerUser } from '@/services/auth';
+import { IconLoading } from '@/components/icon';
 import { toastAlert } from '../ToastAlert/index';
-import { ServiceResult } from 'interfaces/common';
+import { ServiceResult } from '@/interfaces/common';
 
 interface RegisterFormProps {}
 

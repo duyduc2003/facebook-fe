@@ -1,8 +1,4 @@
-import { database } from 'appFirebase';
 import { onValue, ref } from 'firebase/database';
-import useLocalStorage from 'hooks/useLocalStorage';
-import { AuthModel, UserModel } from 'interfaces/auth';
-import { ServiceResult } from 'interfaces/common';
 import { useRouter } from 'next/router';
 import {
   createContext,
@@ -13,9 +9,14 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { getUserDetail, registerUser } from 'services/auth';
-import { LOCAL_REDIRECT_PATH, routes } from 'utils/constants/common';
-import * as authHelper from 'utils/helper/AuthHelper';
+
+import { database } from '@/appFirebase';
+import useLocalStorage from '@/hooks/useLocalStorage';
+import { AuthModel, UserModel } from '@/interfaces/auth';
+import { ServiceResult } from '@/interfaces/common';
+import { getUserDetail, registerUser } from '@/services/auth';
+import { LOCAL_REDIRECT_PATH, routes } from '@/utils/constants/common';
+import * as authHelper from '@/utils/helper/AuthHelper';
 
 interface AuthContextState {
   auth: AuthModel | undefined;

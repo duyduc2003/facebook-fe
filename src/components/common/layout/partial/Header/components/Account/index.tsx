@@ -1,17 +1,17 @@
 /* eslint-disable @next/next/no-img-element */
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 
-import Button from 'components/Button';
-import { IconLogout, IconSetting } from 'components/icon';
-import AppTippy, { HeadlessTippy, WrapPopper } from 'components/Popper';
-import { routes } from 'utils/constants/common';
-import fakeData from 'utils/constants/fakeData';
+import Button from '@/components/Button';
+import { IconLogout, IconSetting } from '@/components/icon';
+import AppTippy, { HeadlessTippy, WrapPopper } from '@/components/Popper';
+import { routes } from '@/utils/constants/common';
+import fakeData from '@/utils/constants/fakeData';
+import { useAuth } from '@/context/AuthContext';
 
-import { useAuth } from 'context/AuthContext';
-import Link from 'next/link';
-const Image = dynamic(() => import('components/Image'), { ssr: false });
+const Image = dynamic(() => import('@/components/Image'), { ssr: false });
 
 interface AccountProps {}
 

@@ -7,19 +7,19 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-
-import Button, { TypeOnClickBtn } from 'components/Button';
-import { IconImage } from 'components/icon';
-import WrapPost from 'components/WrapPost';
-import Popup from './Popup';
-import { useAuth } from 'context/AuthContext';
-import { useAppSelector, useAppDispatch } from 'hooks/redux';
-import { selectors, actions } from './writePostState';
 import { useKeyPressHandler } from 'hooks-react-custom';
 import { useRouter } from 'next/router';
-import { routes } from 'utils/constants/common';
 
-const Image = dynamic(() => import('components/Image'), { ssr: false });
+import Button, { TypeOnClickBtn } from '@/components/Button';
+import { IconImage } from '@/components/icon';
+import WrapPost from '@/components/WrapPost';
+import Popup from './Popup';
+import { useAuth } from '@/context/AuthContext';
+import { useAppSelector, useAppDispatch } from '@/hooks/redux';
+import { routes } from '@/utils/constants/common';
+import { selectors, actions } from './writePostState';
+
+const Image = dynamic(() => import('@/components/Image'), { ssr: false });
 
 export default memo(function WritePost() {
   const isShowPopup = useAppSelector(selectors.selectIsShowPopupWritePost);

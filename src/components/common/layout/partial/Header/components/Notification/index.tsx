@@ -2,12 +2,13 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
-import Button from 'components/Button';
-import { IconBell } from 'components/icon';
-import AppTippy, { HeadlessTippy, WrapPopper } from 'components/Popper';
-import { routes } from 'utils/constants/common';
+import Button from '@/components/Button';
+import { IconBell } from '@/components/icon';
+import AppTippy, { HeadlessTippy, WrapPopper } from '@/components/Popper';
+import { routes } from '@/utils/constants/common';
+import { useBrowserLayoutEffect } from '@/hooks/useBrowserLayoutEffect';
+
 import ListNotification from './ListNotification';
-import { useBrowserLayoutEffect } from 'hooks/useBrowserLayoutEffect';
 
 interface NotificationProps {}
 

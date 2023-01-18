@@ -1,8 +1,9 @@
-import Button from 'components/Button';
-import { IconPost } from 'components/icon';
 import Link from 'next/link';
 import React, { ReactNode } from 'react';
-import { TypeOnClickBtn } from '../../../../../../Button/index';
+
+import Button from '@/components/Button';
+import { IconPost } from '@/components/icon';
+import { TypeOnClickBtn } from '@/components/Button';
 
 export interface MenuItemProps {
   link?: string;

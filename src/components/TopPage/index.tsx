@@ -1,13 +1,9 @@
 import classNames from 'classnames';
 import React, { useRef } from 'react';
-import {
-  useMediaQuery,
-  useScrollPosition,
-  useScrollToTop,
-} from 'hooks-react-custom';
+import { useScrollPosition, useScrollToTop } from 'hooks-react-custom';
 
-import Button from 'components/Button';
-import { IconArrowTop } from 'components/icon';
+import Button from '@/components/Button';
+import { IconArrowTop } from '@/components/icon';
 
 function TopPage() {
   const position = useScrollPosition();

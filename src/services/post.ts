@@ -1,4 +1,4 @@
-import { firestore } from 'appFirebase';
+import { firestore } from '@/appFirebase';
 import {
   addDoc,
   collection,
@@ -7,10 +7,21 @@ import {
   query,
   where,
   onSnapshot,
+  deleteDoc,
+  doc,
+  getDoc,
 } from 'firebase/firestore';
-import { ID, ServiceResult } from 'interfaces/common';
-import { PostModal } from 'interfaces/post';
+import { ID, ServiceResult } from '@/interfaces/common';
+import { PostModal } from '@/interfaces/post';
 import { getUserByID } from './user';
+
+export const deletePostByID = async (id: ID) => {
+  try {
+    await deleteDoc(doc(firestore, 'posts', id));
+  } catch (error) {
+    console.log('🚀 ~ file: post.ts:19 ~ deletePortByID ~ error', error);
+  }
+};
 
 export const uploadPost = async (data: PostModal) => {
   try {
@@ -100,6 +111,7 @@ export const getNewPosts = async (
             userAvatar: data.avatar,
             userName: `${data.firstName} ${data.lastName}`,
             userID,
+            id: doc.id,
           });
       }
       callback({
@@ -114,6 +126,36 @@ export const getNewPosts = async (
   return { unsubscribe } as const;
 };
 
+export const getPostById = async (postID: ID) => {
+  try {
+    const docRef = doc(firestore, 'posts', postID);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const postData = docSnap.data() as PostModal;
+      return {
+        isError: false,
+        data: {
+          ...postData,
+          id: docSnap.id,
+        } as PostModal,
+        message: '',
+      } as ServiceResult<PostModal>;
+    } else
+      return {
+        isError: true,
+        data: undefined,
+        message: '',
+      } as ServiceResult<PostModal>;
+  } catch (error) {
+    console.log('🚀 ~ file: post.ts:133 ~ getPostById ~ error', error);
+  }
+  return {
+    isError: true,
+    data: undefined,
+    message: '',
+  } as ServiceResult<PostModal>;
+};
+
 export const getPostsByUserID = async (userID: ID) => {
   try {
     const usersRef = collection(firestore, 'posts');
@@ -121,7 +163,11 @@ export const getPostsByUserID = async (userID: ID) => {
     const querySnapshot = await getDocs(q);
     let posts: PostModal[] = [];
     querySnapshot.forEach((doc) => {
-      doc.exists() && posts.push(doc.data() as PostModal);
+      doc.exists() &&
+        posts.push({
+          ...(doc.data() as PostModal),
+          id: doc.id,
+        });
     });
 
     posts = [
@@ -164,7 +210,11 @@ const getPosts = async () => {
 
     let posts: PostModal[] = [];
     querySnapshot.forEach((doc) => {
-      doc.exists() && posts.push(doc.data() as PostModal);
+      doc.exists() &&
+        posts.push({
+          ...(doc.data() as PostModal),
+          id: doc.id,
+        });
     });
 
     posts = [

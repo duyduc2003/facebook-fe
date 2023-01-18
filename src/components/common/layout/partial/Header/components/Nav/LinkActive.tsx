@@ -3,8 +3,8 @@ import React, { ReactNode } from 'react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames';
 
-import Button from 'components/Button';
-import AppTippy from 'components/Popper';
+import Button from '@/components/Button';
+import AppTippy from '@/components/Popper';
 
 interface LinkActiveProps {
   icon: ReactNode;

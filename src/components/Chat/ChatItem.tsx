@@ -1,9 +1,10 @@
-import classNames from 'classnames';
-import Image from 'components/Image';
-import { useAuth } from 'context/AuthContext';
-import { ID } from 'interfaces/common';
 import React, { useMemo } from 'react';
-import fakeData from 'utils/constants/fakeData';
+import classNames from 'classnames';
+
+import Image from '@/components/Image';
+import { useAuth } from '@/context/AuthContext';
+import { ID } from '@/interfaces/common';
+import fakeData from '@/utils/constants/fakeData';
 
 interface ChatItemProps {
   userID: ID;

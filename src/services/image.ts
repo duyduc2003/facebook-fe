@@ -1,4 +1,4 @@
-import { storage } from 'appFirebase';
+import { storage } from '@/appFirebase';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 
 type UploadImageProps = {

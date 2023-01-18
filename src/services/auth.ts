@@ -10,10 +10,10 @@ import {
   getDocs,
 } from 'firebase/firestore';
 
-import { database, firestore, storage } from 'appFirebase';
-import { AuthModel, UserModel, LoginModal } from 'interfaces/auth';
-import { ServiceResult } from 'interfaces/common';
-import { defaultData } from 'utils/constants/common';
+import { database, firestore, storage } from '@/appFirebase';
+import { AuthModel, UserModel, LoginModal } from '@/interfaces/auth';
+import { ServiceResult } from '@/interfaces/common';
+import { defaultData } from '@/utils/constants/common';
 
 export const loginUser = async (data: LoginModal) => {
   try {

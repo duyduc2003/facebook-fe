@@ -1,78 +1,76 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import React, { useEffect, useMemo, useState } from 'react';
-
-import Image from 'components/Image';
-import Button from 'components/Button';
-import WrapPost from 'components/WrapPost';
-import { PostModal } from 'interfaces/post';
-import { getUserByID } from 'services/user';
-import { UserModel } from 'interfaces/auth';
-import { useAuth } from 'context/AuthContext';
-import { getPostsByUserID } from 'services/post';
-import Posted from 'components/ListPosted/Posted';
-import { toastAlert } from 'components/ToastAlert';
-import MainLayout from 'components/common/layout/MainLayout';
-import Content from 'components/common/layout/partial/Content';
-import SkeletonUserDetail from 'components/SkeletonLoading/SkeletonUserDetail';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useMediaQuery } from 'hooks-react-custom';
 import classNames from 'classnames';
-import EditProfile from 'components/EditProfile';
 
-interface ProfileProps {}
+import Image from '@/components/Image';
+import Button, { TypeEventClick, TypeOnClickBtn } from '@/components/Button';
+import WrapPost from '@/components/WrapPost';
+import { PostModal } from '@/interfaces/post';
+import { getUserByID } from '@/services/user';
+import { UserModel } from '@/interfaces/auth';
+import { useAuth } from '@/context/AuthContext';
+import { getPostsByUserID } from '@/services/post';
+import Posted from '@/components/ListPosted/Posted';
+import { toastAlert } from '@/components/ToastAlert';
+import MainLayout from '@/components/common/layout/MainLayout';
+import Content from '@/components/common/layout/partial/Content';
+import SkeletonUserDetail from '@/components/SkeletonLoading/SkeletonUserDetail';
+
+import EditProfile from '@/components/EditProfile';
+import { breakpoint, routes } from '@/utils/constants/common';
+import { GetServerSideProps } from 'next';
+import { ParsedUrlQuery } from 'querystring';
+import SkeletonPost from '@/components/SkeletonLoading/SkeletonPost';
+import { ID } from '@/interfaces/common';
+
+interface ProfileProps {
+  userData: UserModel;
+}
 
 function Profile(props: ProfileProps) {
-  const {} = props;
+  const { userData } = props;
 
   const [pending, setPending] = useState(false);
-  const [user, setUser] = useState<UserModel | undefined>();
   const [posts, setPosts] = useState<PostModal[]>([]);
 
   const { currentUser } = useAuth();
 
-  const router = useRouter();
+  const maxWidth400 = useMediaQuery('max-width', breakpoint.s);
 
-  const userID: string = useMemo(
-    () =>
-      (Array.isArray(router?.query?.userID) ? '' : router?.query?.userID) || '',
-    [router.query.userID]
+  const handleClickDeletePost = useCallback(
+    (e?: TypeEventClick, postID?: ID) => {
+      setPosts((prev) => prev.filter((p) => p.id !== postID));
+    },
+    []
   );
-
-  const maxWidth400 = useMediaQuery('max-width', '400px');
 
   useEffect(() => {
     setPending(true);
-    getUserByID(userID)
+    getPostsByUserID(userData.id || '')
       .then((data) => {
-        const { isError, data: _user } = data;
-        if (!isError && _user) {
-          setUser(_user);
-          getPostsByUserID(_user.id || '')
-            .then((data) => {
-              setPending(false);
-              setPosts(data?.data || []);
-            })
-            .catch((e) => console.log(e));
-        } else
-          toastAlert({
-            type: 'error',
-            message: 'Không tồn tại người dùng này',
-          });
-
+        const postsData = data?.data?.sort(
+          (a, b) => Number(b.timestamp) - Number(a.timestamp)
+        );
+        setPosts(postsData || []);
         setPending(false);
       })
-      .catch((error) => console.log(error));
-  }, [userID]);
+      .catch((e) => {
+        console.log(e);
+        setPending(false);
+      });
+  }, [userData?.id]);
 
   return (
     <>
       <Head>
         <title>
-          {user?.firstName || ''} {user?.lastName || ''} | Facebook
+          {userData?.firstName || ''} {userData?.lastName || ''} | Facebook
         </title>
       </Head>
       <Content className="h-full">
-        {pending ? (
+        {!userData ? (
           <div className="h-full">
             <SkeletonUserDetail />
           </div>
@@ -89,21 +87,21 @@ function Profile(props: ProfileProps) {
               <div className="flex md:items-center md:flex-row md:ml-0 ml-4 flex-col gap-5">
                 <div className="w-[100px] h-[100px]">
                   <Image
-                    src={user?.avatar || ''}
-                    alt={user?.lastName || ''}
+                    src={userData?.avatar || ''}
+                    alt={userData?.lastName || ''}
                     rounded
                   />
                 </div>
                 <div>
                   <h1 className="text-primaryText text-[28px] font-[700]">
-                    {user?.firstName} {user?.lastName}
+                    {userData?.firstName} {userData?.lastName}
                   </h1>
                 </div>
               </div>
               <div
                 className={classNames('md:mr-0 mr-4', maxWidth400 && 'ml-4')}
               >
-                {currentUser?.id !== user?.id ? (
+                {currentUser?.id !== userData?.id ? (
                   <Button
                     primary
                     overlay
@@ -114,25 +112,31 @@ function Profile(props: ProfileProps) {
                     Nhắn tin
                   </Button>
                 ) : (
-                  <EditProfile user={user} />
+                  <EditProfile user={userData} />
                 )}
               </div>
             </div>
             <div className="mt-10 rounded-[8px] h-full">
-              {posts && posts.length > 0 ? (
-                posts.map(({ id, body, imageUrl }, i) => (
+              {pending ? (
+                <SkeletonPost />
+              ) : posts && posts.length > 0 ? (
+                posts.map(({ id, body, imageUrl, timestamp, userID }, i) => (
                   <Posted
+                    userID={userID || ''}
+                    postID={id}
                     key={`${id}-${body}-${i}`}
-                    avatar={user?.avatar}
-                    fullName={`${user?.firstName} ${user?.lastName}` || ''}
+                    avatar={userData?.avatar}
+                    fullName={
+                      `${userData?.firstName} ${userData?.lastName}` || ''
+                    }
                     img={imageUrl}
                     content={body || ''}
+                    timestamp={timestamp}
+                    onClickDelete={handleClickDeletePost}
                   />
                 ))
               ) : (
-                <WrapPost className="mb-5 text-sm text-center text-secondaryText font-[400]">
-                  Không có bài viết nào gần đây.
-                </WrapPost>
+                <NotHasPost />
               )}
             </div>
           </div>
@@ -145,3 +149,28 @@ function Profile(props: ProfileProps) {
 Profile.Layout = MainLayout;
 
 export default Profile;
+
+const NotHasPost = () => (
+  <WrapPost className="mb-5 text-sm text-center text-secondaryText font-[400]">
+    Không có bài viết nào gần đây.
+  </WrapPost>
+);
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { userID } = context.params as ParsedUrlQuery;
+  const { data, isError } = await getUserByID(`${userID}`);
+  if (isError && !data) {
+    return {
+      redirect: {
+        destination: routes.HOME,
+        permanent: true,
+      },
+    };
+  }
+
+  return {
+    props: {
+      userData: data || null,
+    },
+  };
+};

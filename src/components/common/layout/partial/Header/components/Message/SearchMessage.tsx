@@ -1,13 +1,13 @@
 import classNames from 'classnames';
 import React, { useEffect, useMemo, useState } from 'react';
-
-import AccountSearch from 'components/AccountSearch';
-import Button from 'components/Button';
-import { IconArrowLeft, IconLoading, IconSearch } from 'components/icon';
-import { HeadlessTippy, WrapPopper } from 'components/Popper';
-import { UserModel } from 'interfaces/auth';
 import { useAsync, useDebounce, useInputText } from 'hooks-react-custom';
-import { searchUser } from 'services/user';
+
+import AccountSearch from '@/components/AccountSearch';
+import Button from '@/components/Button';
+import { IconArrowLeft, IconLoading, IconSearch } from '@/components/icon';
+import { HeadlessTippy, WrapPopper } from '@/components/Popper';
+import { UserModel } from '@/interfaces/auth';
+import { getUsers } from '@/services/user';
 
 interface SearchMessageProps {}
 
@@ -15,7 +15,7 @@ export default function SearchMessage(props: SearchMessageProps) {
   const {} = props;
 
   const [showSearchMess, setShowSearchMess] = useState(false);
-  const { execute, error, status, value } = useAsync(searchUser, false);
+  const { execute, error, status, value } = useAsync(getUsers, false);
   const [pending, setPending] = useState<boolean>(false);
   const [accounts, setAccounts] = useState<UserModel[]>([]);
 

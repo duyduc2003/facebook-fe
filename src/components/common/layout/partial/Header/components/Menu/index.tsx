@@ -1,21 +1,20 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 
-import Button from 'components/Button';
+import Button from '@/components/Button';
 import {
   Icon9Dot,
   IconBook,
   IconPeopleGroupSmall,
   IconPlus,
   IconPost,
-} from 'components/icon';
-import AppTippy, { HeadlessTippy, WrapPopper } from 'components/Popper';
-
+} from '@/components/icon';
+import AppTippy, { HeadlessTippy, WrapPopper } from '@/components/Popper';
+import { routes } from '@/utils/constants/common';
+import { actions } from '@/components/WritePost/writePostState';
+import { useAuth } from '@/context/AuthContext';
+import { useAppDispatch } from '@/hooks/redux';
 import MenuItem, { MenuItemProps } from './MenuItem';
-import { routes } from 'utils/constants/common';
-import { actions } from 'components/WritePost/writePostState';
-import { useAuth } from 'context/AuthContext';
-import { useAppDispatch } from 'hooks/redux';
 
 export default function Menu() {
   const [showMenu, setShowMenu] = useState(false);

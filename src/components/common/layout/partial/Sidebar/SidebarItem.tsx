@@ -1,10 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { ReactNode } from 'react';
-
-import Button from 'components/Button';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
-const Image = dynamic(() => import('components/Image'), { ssr: false });
+
+import Button from '@/components/Button';
+
+const Image = dynamic(() => import('@/components/Image'), { ssr: false });
 
 interface SidebarItemProps {
   avatar?: string;

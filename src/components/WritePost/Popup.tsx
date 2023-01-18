@@ -4,19 +4,19 @@ import classNames from 'classnames';
 import { useAsync, useKeyPressHandler } from 'hooks-react-custom';
 import React, { memo, useCallback, useState } from 'react';
 
-import Button from 'components/Button';
-import { IconCloseLg, IconLoading } from 'components/icon';
-import { uploadPost } from 'services/post';
-import { uploadImage } from 'services/image';
-import { useAuth } from 'context/AuthContext';
+import Button from '@/components/Button';
+import { IconCloseLg, IconLoading } from '@/components/icon';
+import { uploadPost } from '@/services/post';
+import { uploadImage } from '@/services/image';
+import { useAuth } from '@/context/AuthContext';
 
 import PostImage from './PostImage';
 import { toastAlert } from '../ToastAlert/index';
 
-const TextEditor = dynamic(() => import('components/TextEditor'), {
+const TextEditor = dynamic(() => import('@/components/TextEditor'), {
   ssr: false,
 });
-const Image = dynamic(() => import('components/Image'), { ssr: false });
+const Image = dynamic(() => import('@/components/Image'), { ssr: false });
 
 interface PopupProps {
   visible: boolean;

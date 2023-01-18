@@ -1,10 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
-import Button from 'components/Button';
-import { IconClose } from 'components/icon';
-import Image from 'components/Image';
 import Link from 'next/link';
 import React from 'react';
-import { TypeOnClickBtn } from '../Button/index';
+
+import Button from '@/components/Button';
+import { IconClose } from '@/components/icon';
+import Image from '@/components/Image';
+import { TypeOnClickBtn } from '@/components/Button';
 
 interface AccountSearchProps {
   fullName: string;

@@ -8,16 +8,17 @@ import {
   IconFB,
   IconLoading,
   IconSearch,
-} from 'components/icon';
-import { HeadlessTippy } from 'components/Popper';
-import WrapPopper from 'components/Popper/WrapPopper';
-import Button from 'components/Button';
-import { routes } from 'utils/constants/common';
+} from '@/components/icon';
+import { HeadlessTippy } from '@/components/Popper';
+import WrapPopper from '@/components/Popper/WrapPopper';
+import Button from '@/components/Button';
+import { routes } from '@/utils/constants/common';
 
 import styles from './search.module.scss';
-import AccountSearch from 'components/AccountSearch';
-import { searchUser } from 'services/user';
-import { UserModel } from 'interfaces/auth';
+import AccountSearch from '@/components/AccountSearch';
+import { getUsers } from '@/services/user';
+import { UserModel } from '@/interfaces/auth';
+import Skeleton from 'react-loading-skeleton';
 
 const cx = classNames.bind(styles);
 
@@ -27,13 +28,13 @@ export default function Search(props: SearchProps) {
   const {} = props;
 
   const inputText = useInputText('');
-  const { execute, error, status, value } = useAsync(searchUser, false);
+  const { execute, error, status, value } = useAsync(getUsers, false);
 
   const [showPopperSearch, setShowPopperSearch] = useState<boolean>(false);
   const [pending, setPending] = useState<boolean>(false);
   const [accounts, setAccounts] = useState<UserModel[]>([]);
 
-  const { debouncedValue, isPending } = useDebounce<string>(inputText.value);
+  const { debouncedValue } = useDebounce<string>(inputText.value);
 
   const accountsResult: UserModel[] = useMemo(
     () =>
@@ -76,12 +77,13 @@ export default function Search(props: SearchProps) {
       )}
     >
       <div className="py-[16px] px-[8px] flex flex-col text-left">
-        {pending || isPending ? (
-          <div className="flex justify-center items-center h-full">
-            <div className="w-4 h-4">
-              <IconLoading />
-            </div>
-          </div>
+        {pending ? (
+          <Skeleton
+            enableAnimation
+            height={40}
+            className="rounded-[12px]"
+            count={2}
+          />
         ) : (
           <>
             {accountsResult.map(({ avatar, firstName, lastName, id }) => (
@@ -156,7 +158,10 @@ export default function Search(props: SearchProps) {
             >
               <IconSearch />
             </label>
-            <label htmlFor={inputID} className="flex-1 h-full cursor-pointer">
+            <label
+              htmlFor={inputID}
+              className=" relative flex-1 h-full cursor-pointer"
+            >
               <input
                 id={inputID}
                 type="text"

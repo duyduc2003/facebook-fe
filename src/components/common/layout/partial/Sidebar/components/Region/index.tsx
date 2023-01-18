@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import React from 'react';
-
-import Button from 'components/Button';
 import classNames from 'classnames';
+
+import Button from '@/components/Button';
 
 interface RegionProps {
   title: string;

@@ -1,4 +1,4 @@
-import { firestore } from 'appFirebase';
+import { firestore } from '@/appFirebase';
 import {
   collection,
   doc,
@@ -8,15 +8,11 @@ import {
   where,
   updateDoc,
 } from 'firebase/firestore';
-import { ID } from 'interfaces/common';
+import { ID } from '@/interfaces/common';
 import { UserModel } from '../interfaces/auth';
 import { ServiceResult } from '../interfaces/common';
 
 export const updateAvatarUser = async (userID: ID, urlAvatar: string) => {
-  console.log(
-    '🚀 ~ file: user.ts:16 ~ updateAvatarUser ~ urlAvatar',
-    urlAvatar
-  );
   try {
     const ref = doc(firestore, 'users', userID);
     await updateDoc(ref, {
@@ -56,7 +52,7 @@ export const getUserByID = async (id: ID) => {
   } as ServiceResult<UserModel>;
 };
 
-export const searchUser = async () => {
+export const getUsers = async () => {
   try {
     const usersRef = collection(firestore, 'users');
     const queryUser = query(usersRef);
@@ -80,7 +76,7 @@ export const searchUser = async () => {
       message: '',
     } as const;
   } catch (error) {
-    console.log('🚀 ~ file: user.ts:40 ~ searchUser ~ error', error);
+    console.log('🚀 ~ file: user.ts:40 ~ getUsers ~ error', error);
   }
 
   return {

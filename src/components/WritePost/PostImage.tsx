@@ -1,10 +1,10 @@
 import React, { useEffect, useId, useRef, useState } from 'react';
 import classNames from 'classnames';
 
-import Button from 'components/Button';
-import { IconClose, IconImage, IconPlus } from 'components/icon';
-import Image from 'components/Image';
-import Input from 'components/Input';
+import Button from '@/components/Button';
+import { IconClose, IconImage, IconPlus } from '@/components/icon';
+import Image from '@/components/Image';
+import Input from '@/components/Input';
 
 interface PostImageProps {
   showPostImg?: boolean;

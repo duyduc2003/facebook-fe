@@ -3,15 +3,14 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
 
-import Input from 'components/Input';
-import Button from 'components/Button';
-import ModalPopup from 'components/Modal';
-import WrapPost from 'components/WrapPost';
-import { IconFacebookLarge } from 'components/icon';
-import Body from 'components/common/layout/partial/Body';
-import RegisterForm from 'components/auth/RegisterForm';
-import LoginForm from 'components/auth/LoginForm';
-import { useKeyPressHandler } from 'hooks-react-custom';
+import Input from '@/components/Input';
+import Button from '@/components/Button';
+import ModalPopup from '@/components/Modal';
+import WrapPost from '@/components/WrapPost';
+import { IconFacebookLarge } from '@/components/icon';
+import Body from '@/components/common/layout/partial/Body';
+import RegisterForm from '@/components/auth/RegisterForm';
+import LoginForm from '@/components/auth/LoginForm';
 
 export default function Login() {
   const [showModalRegister, setModalRegister] = useState(false);

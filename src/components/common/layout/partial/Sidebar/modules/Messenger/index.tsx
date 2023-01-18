@@ -1,7 +1,8 @@
-import Button from 'components/Button';
-import { Icon3Dot } from 'components/icon';
 import React from 'react';
-import ListMessage from 'components/ListMessage';
+
+import Button from '@/components/Button';
+import { Icon3Dot } from '@/components/icon';
+import ListMessage from '@/components/ListMessage';
 
 interface SidebarMessengerProps {}
 

@@ -1840,10 +1840,10 @@ hoist-non-react-statics@^3.3.0, hoist-non-react-statics@^3.3.2:
   dependencies:
     react-is "^16.7.0"
 
-hooks-react-custom@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/hooks-react-custom/-/hooks-react-custom-1.0.3.tgz#9aac329e05320b20475dc037d588a09ac40b45a6"
-  integrity sha512-uCbsiFYy4sBiOeg7N5qNhd3w3wiSaH0WEOS26GUY1m/wiS8dLJ2Iwi+JeNhQ82gesWUjeTy2y3eygl6h+n42Jw==
+hooks-react-custom@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/hooks-react-custom/-/hooks-react-custom-1.0.5.tgz#1e8ffa9d2a9948eebf1db615d0f2896f12f1841a"
+  integrity sha512-VDVX1KH75dAjp49XooRa4HRFbnHMnDcQc5hAKX8G37LdXolovhx0EUnqMRab1m0A/h8UM1V+uGc2B6JOXbxDyw==
 
 http-parser-js@>=0.5.1:
   version "0.5.8"

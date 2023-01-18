@@ -1,14 +1,15 @@
-import Button from 'components/Button';
-import Image from 'components/Image';
-import Input from 'components/Input';
-import Modal from 'components/Modal';
 import { useAsync, useToggle } from 'hooks-react-custom';
 import React, { useCallback, useEffect, useState } from 'react';
-import { UserModel } from 'interfaces/auth';
-import { uploadImage } from 'services/image';
-import { toastAlert } from '../ToastAlert/index';
-import { IconLoading } from 'components/icon';
-import { updateAvatarUser } from '../../services/user';
+
+import Button from '@/components/Button';
+import Image from '@/components/Image';
+import Input from '@/components/Input';
+import Modal from '@/components/Modal';
+import { UserModel } from '@/interfaces/auth';
+import { uploadImage } from '@/services/image';
+import { toastAlert } from '@/components/ToastAlert';
+import { IconLoading } from '@/components/icon';
+import { updateAvatarUser } from '@/services/user';
 
 interface EditProfileProps {
   user?: UserModel;
@@ -101,7 +102,7 @@ function EditProfile(props: EditProfileProps) {
           <h2 className="text-[20px] font-[600] mb-5">
             Chỉnh sửa ảnh đại diện
           </h2>
-          <div>
+          <div className="max-h-[400px] overflow-y-auto">
             <div className="shadow-[rgba(99,99,99,0.2)_0px_2px_8px_0px] max-w-[300px] rounded-[8px] overflow-hidden">
               <Image src={previewImg} alt="" className="w-full" />
             </div>
