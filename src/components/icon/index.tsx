@@ -454,8 +454,7 @@ export const IconImageColor = () => (
       <path
         d="M13.9 15.5l-8.2-.7c-.7-.1-1.3-.8-1.3-1.6l1-11.4C5.5 1 6.2.5 7 .5l8.2.7c.8.1 1.3.8 1.3 1.6l-1 11.4c-.1.8-.8 1.4-1.6 1.3z"
         stroke="#0084ff"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
       ></path>
     </g>
   </svg>

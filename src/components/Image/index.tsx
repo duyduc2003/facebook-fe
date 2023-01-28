@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import React, { memo, useEffect, useState } from 'react';
 
 import placeholderImg from '@/assets/image/placeholderImg.png';
-import { useBrowserLayoutEffect } from '@/hooks/useBrowserLayoutEffect';
+import { useIsomorphicLayoutEffect } from 'hooks-react-custom';
 
 interface ImageProps {
   src: string;
@@ -38,7 +38,7 @@ export default memo(function Image(props: ImageProps) {
     setSource(fallback);
   };
 
-  useBrowserLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     setSource(src);
   }, [src]);
 

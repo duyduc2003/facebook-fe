@@ -1,8 +1,11 @@
 import {
   addDoc,
+  arrayUnion,
   collection,
   doc,
+  getDoc,
   getDocs,
+  onSnapshot,
   orderBy,
   query,
   updateDoc,
@@ -10,99 +13,114 @@ import {
 } from 'firebase/firestore';
 
 import { firestore } from '@/appFirebase';
-import { ChatModal } from '@/interfaces/chat';
-import { ID, ServiceResult } from '@/interfaces/common';
 import { PreviewChatModal } from '@/interfaces/chat';
+import { ID, ServiceResult } from '@/interfaces/common';
 import timestamp from '@/utils/helper/timestamp';
+import { ChatModal } from '../interfaces/chat';
 
 export const createPreviewChat = async (data: PreviewChatModal) => {
   try {
-    const result = await getPreviewChatByUserIDAndFriendID(
-      data.user_id || '',
-      data.friend_id || ''
-    );
+    const body: PreviewChatModal = {
+      ...data,
+      timestamp: timestamp(),
+    };
+    const previewRef = collection(firestore, 'chats');
+    const result = await addDoc(previewRef, body);
+    return {
+      isError: true,
+      data: result.id,
+    } as const;
+  } catch (error) {
+    console.log('🚀 ~ file: chat.ts:22 ~ createPreviewChat ~ error', error);
+  }
+};
 
-    if (result) {
-      const body: PreviewChatModal = {
-        status_seen: 'notSeen',
-        status_send: 'iSend',
-        timestamp: timestamp(),
-      };
-      const ref = doc(firestore, 'previewChat', result.id || '');
-      await updateDoc(ref, {
-        ...body,
+export const updatePreviewChat = async (data: PreviewChatModal) => {};
+
+export const getChatRealTime = (
+  chatID: ID,
+  callback: ({ isError = true }: ServiceResult<ChatModal[]>) => void
+) => {
+  const previewRef = doc(firestore, 'chats', chatID);
+  const unsubscribe = onSnapshot(previewRef, (querySnapshot) => {
+    callback({
+      isError: false,
+      data: querySnapshot.data()?.chats,
+    });
+  });
+
+  return { unsubscribe } as const;
+};
+
+export const getChatsByCurrentUser = (
+  id: ID,
+  callback: ({
+    isError = true,
+  }: ServiceResult<PreviewChatModal[] | undefined>) => void
+) => {
+  const previewRef = collection(firestore, 'chats');
+  const q = query(
+    previewRef,
+    where('users_id', 'array-contains', id),
+    orderBy('timestamp', 'desc')
+  );
+  const unsubscribe = onSnapshot(q, (querySnapshot) => {
+    const preview: PreviewChatModal[] = [];
+
+    for (const doc of querySnapshot.docs) {
+      preview.push({
+        ...(doc.data() as PreviewChatModal),
+        id: doc.id,
       });
-    } else {
-      const body: PreviewChatModal = {
-        ...data,
-        timestamp: timestamp(),
-      };
     }
-  } catch (error) {
-    console.log('🚀 ~ file: chat.ts:12 ~ createPreviewChat ~ error', error);
-  }
+
+    callback({
+      isError: false,
+      data: preview,
+    });
+  });
+
+  return { unsubscribe } as const;
 };
 
-const getPreviewChatByUserIDAndFriendID = async (
-  user_id: ID,
-  friend_id: ID
-): Promise<PreviewChatModal | undefined> => {
-  try {
-    const previewChatRef = collection(firestore, 'previewChat');
-    const q = query(
-      previewChatRef,
-      where('user_id', '==', user_id),
-      where('friend_id', '==', friend_id),
-      orderBy('timestamp', 'desc')
-    );
-
-    const querySnapshot = await getDocs(q);
-    if (!querySnapshot.empty) {
-      const [previewChat] = querySnapshot.docs;
-      if (previewChat.exists())
-        return {
-          ...previewChat.data(),
-          id: previewChat.id,
-        } as PreviewChatModal;
-    }
-  } catch (error) {
-    console.log(
-      '🚀 ~ file: chat.ts:23 ~ getPreviewChatByUserIDAndFriendID ~ error',
-      error
-    );
-  }
-
-  return undefined;
-};
-
-export const sendChat = async (data: ChatModal) => {
+export const sendChat = async (chatID: ID, data: ChatModal) => {
   try {
     const body: ChatModal = {
       ...data,
-      timestamp: JSON.stringify(Date.now()),
+      timestamp: timestamp(),
     };
-    const chatCollection = collection(firestore, '/messenger/');
-    const result = await addDoc(chatCollection, body);
+    const ref = doc(firestore, 'chats', chatID);
+    await updateDoc(ref, {
+      chats: arrayUnion(body),
+      preview_chat: body.message,
+    });
+  } catch (error) {
+    console.log('🚀 ~ file: chat.ts:74 ~ sendChat ~ error', error);
+  }
+};
 
-    if (result)
+export const getChatDetailByID = async (id: ID) => {
+  try {
+    const docRef = doc(firestore, 'chats', id);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const doc = docSnap.data() as PreviewChatModal;
       return {
         isError: false,
-        data: result.id,
+        data: {
+          ...doc,
+          id: docSnap.id,
+        } as PreviewChatModal,
         message: '',
-      } as ServiceResult<string>;
-    else
-      return {
-        isError: true,
-        data: undefined,
-        message: 'Gửi tin nhắn không thành công!',
-      } as ServiceResult<string>;
+      } as const;
+    }
   } catch (error) {
-    console.log('🚀 ~ file: chat.ts:6 ~ sendChat ~ error', error);
+    console.log('🚀 ~ file: chat.ts:89 ~ getChatDetailByID ~ error', error);
   }
 
   return {
     isError: true,
     data: undefined,
-    message: 'Something wrong!',
-  } as ServiceResult<string>;
+    message: '',
+  } as const;
 };

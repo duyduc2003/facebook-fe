@@ -1,4 +1,8 @@
-import { useIsomorphicLayoutEffect, usePrevious } from 'hooks-react-custom';
+import {
+  useIsomorphicLayoutEffect,
+  useMemoCompare,
+  usePrevious,
+} from 'hooks-react-custom';
 import { Unsubscribe } from 'firebase/firestore';
 import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 
@@ -7,30 +11,28 @@ import WrapPost from '@/components/WrapPost';
 import { getNewPosts } from '@/services/post';
 import { PostModal } from '@/interfaces/post';
 import { useAppDispatch } from '@/hooks/redux';
-import { actions, selectors } from './PostState';
 import { useAppSelector } from '@/hooks/redux';
 import { useAuth } from '@/context/AuthContext';
 
-interface LoadNewPostProps {}
+interface LoadNewPostProps {
+  posts: PostModal[];
+  setPosts: React.Dispatch<React.SetStateAction<PostModal[]>>;
+}
 
 function LoadNewPost(props: LoadNewPostProps) {
-  const {} = props;
-  const postsLocal = useAppSelector(selectors.selectPosts);
-
-  const dispatch = useAppDispatch();
+  const { posts, setPosts } = props;
 
   const [NewPosts, setNewPosts] = useState<PostModal[]>([]);
 
-  const NewPostsPreviousLength = usePrevious(NewPosts.length);
-
-  const sizeNewPosts = useMemo(
-    () => Math.abs(postsLocal.length - NewPosts.length),
-    [postsLocal.length, NewPosts.length]
+  const sizeNewPost = useMemo(
+    () => NewPosts.length - posts.length,
+    [NewPosts.length, posts.length]
   );
 
   const handleClickLoadNewPosts = useCallback(() => {
-    dispatch(actions.addPosts(NewPosts.slice(0, sizeNewPosts)));
-  }, [NewPosts, sizeNewPosts]);
+    const newP = NewPosts.slice(0, sizeNewPost);
+    setPosts((prev) => [...newP, ...prev]);
+  }, [NewPosts, setPosts, sizeNewPost]);
 
   useIsomorphicLayoutEffect(() => {
     let unsub: Unsubscribe = () => {};
@@ -47,7 +49,7 @@ function LoadNewPost(props: LoadNewPostProps) {
     };
   }, []);
 
-  return sizeNewPosts !== postsLocal.length && sizeNewPosts > 0 ? (
+  return sizeNewPost > 0 ? (
     <WrapPost className="my-4 !py-0">
       <Button
         className="py-3 flex justify-center items-center text-sm font-[500] bg-primaryButtonBackground text-white text-center w-full h-full"
@@ -56,7 +58,7 @@ function LoadNewPost(props: LoadNewPostProps) {
         onClick={handleClickLoadNewPosts}
       >
         <span className="w-2 h-2 inline-block bg-white rounded-[50%] mr-2"></span>
-        Có {sizeNewPosts || 0} bài viết mới
+        Có {sizeNewPost} bài viết mới
       </Button>
     </WrapPost>
   ) : (

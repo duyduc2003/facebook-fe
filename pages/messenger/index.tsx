@@ -18,7 +18,11 @@ function Messenger() {
           <SidebarMessenger />
         </Sidebar>
         <Content size="full">
-          <WrapChat />
+          <div className="h-[calc(100vh_-_56px)]">
+            <div className="bg-webWash h-full text-center px-5 flex items-center justify-center text-secondaryText font-[700] text-[20px]">
+              Hãy chọn một đoạn chat hoặc bắt đầu cuộc trò chuyện mới
+            </div>
+          </div>
         </Content>
       </Body>
     </>

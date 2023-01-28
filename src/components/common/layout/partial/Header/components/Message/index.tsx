@@ -10,7 +10,7 @@ import {
   IconPostSmall,
 } from '@/components/icon';
 import Button from '@/components/Button';
-import ListMessage from '@/components/ListMessage';
+import ListMessage from '@/components/PreviewChat';
 import { routes } from '@/utils/constants/common';
 
 import SearchMessage from './SearchMessage';

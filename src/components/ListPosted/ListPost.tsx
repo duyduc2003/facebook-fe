@@ -11,57 +11,30 @@ import { useAppSelector, useAppDispatch } from '@/hooks/redux';
 
 import Posted from './Posted';
 import LoadNewPost from './LoadNewPost';
-import { actions, selectors } from './PostState';
-import SkeletonPost from '@/components/SkeletonLoading/SkeletonPost';
 
-function ListPost() {
-  const postsLocal = useAppSelector(selectors.selectPosts);
-  const dispatch = useAppDispatch();
+interface ListPostProps {
+  data: PostModal[];
+}
 
-  const [posts, setPosts] = useState<PostModal[]>([]);
-  const [pending, setPending] = useState<boolean>(false);
-
-  const { error, execute, status, value } = useAsync<
-    ServiceResult<PostModal[]>
-  >(getPostsAllField, false);
+function ListPost({ data }: ListPostProps) {
+  const [posts, setPosts] = useState<PostModal[]>(data);
 
   const handleClickDeletePost = useCallback(
     (e?: any, postID?: ID) => {
-      const match = postsLocal.find((p) => p.id === postID);
-      if (match) dispatch(actions.deletePostByID(postID || ''));
+      const match = posts.find((p) => p.id === postID);
+      if (match) setPosts((prev) => prev.filter((item) => item.id !== postID));
       else {
         toastAlert({ type: 'info', message: 'Không tìm thấy bài viết.' });
       }
     },
-    [postsLocal]
+    [posts]
   );
-
-  useIsomorphicLayoutEffect(() => {
-    if (status === 'idle') {
-      execute();
-    } else if (status === 'pending') {
-      setPending(true);
-    } else if (status === 'success' && value !== null) {
-      const { isError, data } = value;
-      if (!isError && data) {
-        dispatch(actions.setPosts(data));
-      } else toastAlert({ type: 'error', message: 'Tải bài viết lỗi.' });
-      setPending(false);
-    } else if (status === 'error') {
-      console.log(error);
-      toastAlert({ type: 'error', message: 'Tải bài viết lỗi.' });
-    }
-  }, [status]);
-
-  useIsomorphicLayoutEffect(() => {
-    setPosts(postsLocal);
-  }, [postsLocal]);
 
   return (
     <>
-      <LoadNewPost />
-      {postsLocal && postsLocal.length > 0 ? (
-        postsLocal.map(
+      <LoadNewPost posts={posts} setPosts={setPosts} />
+      {posts && posts.length > 0 ? (
+        posts.map(
           (
             { id, body, imageUrl, userAvatar, userName, userID, timestamp },
             i
@@ -79,8 +52,6 @@ function ListPost() {
             />
           )
         )
-      ) : pending ? (
-        <SkeletonPost />
       ) : (
         <WrapPost className="mt-5 text-sm text-center text-secondaryText font-[400]">
           Không có bài viết nào gần đây.

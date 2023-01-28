@@ -2,7 +2,9 @@ import React from 'react';
 
 import Button from '@/components/Button';
 import { Icon3Dot } from '@/components/icon';
-import ListMessage from '@/components/ListMessage';
+import PreviewChat from '@/components/PreviewChat';
+import Link from 'next/link';
+import { routes } from '@/utils/constants/common';
 
 interface SidebarMessengerProps {}
 
@@ -12,9 +14,12 @@ function SidebarMessenger(props: SidebarMessengerProps) {
   return (
     <div>
       <div className="mt-4 mb-4 px-4 flex justify-between items-center">
-        <p className="text-primaryText text-[24px] font-[800] leading-[28px] ">
+        <Link
+          href={routes.MESSENGER}
+          className="text-primaryText text-[24px] font-[800] leading-[28px] "
+        >
           Chat
-        </p>
+        </Link>
         <div className="flex items-center">
           <Button
             secondary
@@ -28,7 +33,7 @@ function SidebarMessenger(props: SidebarMessengerProps) {
         </div>
       </div>
       <div>
-        <ListMessage />
+        <PreviewChat />
       </div>
     </div>
   );

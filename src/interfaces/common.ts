@@ -17,8 +17,8 @@ export type AppPropsWithLayout = AppProps & {
 
 export type ServiceResult<T> = {
   isError: boolean;
-  data: T | undefined;
-  message: string;
+  data?: T ;
+  message?: string;
 };
 
 export type ID = string;

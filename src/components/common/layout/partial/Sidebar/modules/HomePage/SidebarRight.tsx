@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import Skeleton from 'react-loading-skeleton';
 
 import { routes } from '@/utils/constants/common';
 import Region from '../../components/Region';
 import SidebarItem from '../../SidebarItem';
 import { getUsers } from '@/services/user';
 import { UserModel } from '@/interfaces/auth';
-import { IconLoading } from '@/components/icon';
-import Skeleton from 'react-loading-skeleton';
 
 interface SidebarRightProps {}
 

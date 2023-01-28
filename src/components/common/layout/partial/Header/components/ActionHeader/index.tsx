@@ -20,7 +20,7 @@ export default function Action(props: ActionProps) {
   return (
     <div className="flex items-center h-full">
       <Menu />
-      {(router.pathname !== routes.MESSENGER || !matchQuery) && <Message />}
+      <Message />
       <Notification />
       <Account />
     </div>

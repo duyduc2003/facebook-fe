@@ -1,15 +1,15 @@
+import { GetServerSideProps } from 'next';
 import Head from 'next/head';
+import { ParsedUrlQuery } from 'querystring';
 
 import MainLayout from '@/components/common/layout/MainLayout';
-import { GetServerSideProps } from 'next';
-import { ParsedUrlQuery } from 'querystring';
 import { getPostById } from '@/services/post';
 import { routes } from '@/utils/constants/common';
 import { PostModal } from '@/interfaces/post';
 import Posted from '@/components/ListPosted/Posted';
 import Body from '@/components/common/layout/partial/Body';
 import Content from '@/components/common/layout/partial/Content';
-import { getUserByID } from '../../src/services/user';
+import { getUserByID } from '@/services/user';
 
 interface PostDetailProps {
   postData: PostModal;
@@ -42,7 +42,9 @@ PostDetail.Layout = MainLayout;
 
 export default PostDetail;
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps<PostDetailProps> = async (
+  context
+) => {
   const { post } = context.params as ParsedUrlQuery;
   const { data, isError } = await getPostById(`${post}`);
   if (isError && !data)

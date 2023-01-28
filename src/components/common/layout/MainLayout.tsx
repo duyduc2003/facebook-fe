@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import React, { ReactNode, useEffect } from 'react';
 
 import { routes } from '@/utils/constants/common';
-import { useBrowserLayoutEffect } from '@/hooks/useBrowserLayoutEffect';
 
 import Header from './partial/Header';
 

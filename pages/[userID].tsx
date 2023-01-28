@@ -1,7 +1,6 @@
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useMediaQuery } from 'hooks-react-custom';
+import { useAsync, useMediaQuery } from 'hooks-react-custom';
 import classNames from 'classnames';
 
 import Image from '@/components/Image';
@@ -17,13 +16,14 @@ import { toastAlert } from '@/components/ToastAlert';
 import MainLayout from '@/components/common/layout/MainLayout';
 import Content from '@/components/common/layout/partial/Content';
 import SkeletonUserDetail from '@/components/SkeletonLoading/SkeletonUserDetail';
-
 import EditProfile from '@/components/EditProfile';
 import { breakpoint, routes } from '@/utils/constants/common';
 import { GetServerSideProps } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import SkeletonPost from '@/components/SkeletonLoading/SkeletonPost';
 import { ID } from '@/interfaces/common';
+import { createPreviewChat } from '@/services/chat';
+import { useRouter } from 'next/router';
 
 interface ProfileProps {
   userData: UserModel;
@@ -35,9 +35,23 @@ function Profile(props: ProfileProps) {
   const [pending, setPending] = useState(false);
   const [posts, setPosts] = useState<PostModal[]>([]);
 
-  const { currentUser } = useAuth();
+  const { currentUser, handleRedirectLogin } = useAuth();
 
   const maxWidth400 = useMediaQuery('max-width', breakpoint.s);
+
+  const router = useRouter();
+
+  const { execute, status, value } = useAsync(
+    async () => {
+      if (currentUser && userData.id && currentUser.id)
+        return await createPreviewChat({
+          users_id: [userData.id, currentUser.id],
+          users: [userData, currentUser],
+          preview_chat: `${currentUser?.lastName} đã tạo đoạn chat.`,
+        });
+    },
+    { log: true }
+  );
 
   const handleClickDeletePost = useCallback(
     (e?: TypeEventClick, postID?: ID) => {
@@ -45,6 +59,16 @@ function Profile(props: ProfileProps) {
     },
     []
   );
+
+  const handleClickCreateChat = useCallback(() => {
+    handleRedirectLogin();
+    execute();
+  }, [execute, handleRedirectLogin]);
+
+  useEffect(() => {
+    if (status === 'success')
+      router.push(`${routes.MESSENGER}/${value?.data}` || routes.HOME);
+  }, [status]);
 
   useEffect(() => {
     setPending(true);
@@ -108,6 +132,7 @@ function Profile(props: ProfileProps) {
                     rounded="8px"
                     center
                     className="p-[6px_10px] text-[15px] font-[500]"
+                    onClick={handleClickCreateChat}
                   >
                     Nhắn tin
                   </Button>

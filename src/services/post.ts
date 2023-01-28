@@ -15,6 +15,28 @@ import { ID, ServiceResult } from '@/interfaces/common';
 import { PostModal } from '@/interfaces/post';
 import { getUserByID } from './user';
 
+export const getAllPathPosts = async () => {
+  try {
+    const { data, isError } = await getPosts();
+    if (!isError && data)
+      return {
+        isError,
+        data: data.map((item) => ({
+          params: {
+            post: item.id,
+          },
+        })),
+      };
+  } catch (error) {
+    console.log('🚀 ~ file: post.ts:22 ~ getAllPathPost ~ error', error);
+  }
+
+  return {
+    isError: true,
+    data: undefined,
+  };
+};
+
 export const deletePostByID = async (id: ID) => {
   try {
     await deleteDoc(doc(firestore, 'posts', id));

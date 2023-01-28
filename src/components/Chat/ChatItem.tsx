@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import Image from '@/components/Image';
 import { useAuth } from '@/context/AuthContext';
 import { ID } from '@/interfaces/common';
-import fakeData from '@/utils/constants/fakeData';
 
 interface ChatItemProps {
   userID: ID;
@@ -26,17 +25,14 @@ function ChatItem(props: ChatItemProps) {
   return (
     <div
       className={classNames(
-        'flex my-5 mr-28',
+        'flex my-5 mr-28 transition-all duration-200',
         currentUserSend && 'flex-row-reverse justify-end mr-0 ml-28'
       )}
     >
       <div className="p-[0_8px_0_14px]">
         <div className="w-[28px] h-[28px]">
           <Image
-            src={
-              (currentUserSend ? currentUser?.avatar : avatar) ||
-              fakeData.avatar
-            }
+            src={(currentUserSend ? currentUser?.avatar : avatar) || ''}
             alt=""
             rounded
           />
@@ -45,7 +41,7 @@ function ChatItem(props: ChatItemProps) {
       <div>
         <div
           className={classNames(
-            'bg-commentBackground leading-[20px] text-primaryText text-[15px] break-words p-[8px_12px] rounded-[18px]',
+            'bg-commentBackground custom_md:!max-w-[300px] min-[1060px]:!max-w-[500px] max-w-[250px] leading-[20px] text-primaryText text-[15px] break-words p-[8px_12px] rounded-[18px]',
             currentUserSend && '!bg-primaryButtonBackground !text-white',
             !chat && image && '!bg-transparent !pt-0 mt-0'
           )}

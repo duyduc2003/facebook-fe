@@ -16,7 +16,7 @@ interface InputProps {
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default memo(function Input(props: InputProps) {
+function Input(props: InputProps, ref: any) {
   const {
     errors,
     register,
@@ -35,6 +35,7 @@ export default memo(function Input(props: InputProps) {
   return (
     <div className="flex flex-col">
       <input
+        ref={ref}
         defaultChecked={defaultChecked}
         autoComplete="off"
         className={classNames('outline-none border', className)}
@@ -54,4 +55,6 @@ export default memo(function Input(props: InputProps) {
       )}
     </div>
   );
-});
+}
+
+export default memo(React.forwardRef(Input));

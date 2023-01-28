@@ -6,9 +6,9 @@ import Button from '@/components/Button';
 import { IconBell } from '@/components/icon';
 import AppTippy, { HeadlessTippy, WrapPopper } from '@/components/Popper';
 import { routes } from '@/utils/constants/common';
-import { useBrowserLayoutEffect } from '@/hooks/useBrowserLayoutEffect';
 
 import ListNotification from './ListNotification';
+import { useIsomorphicLayoutEffect } from 'hooks-react-custom';
 
 interface NotificationProps {}
 
@@ -45,7 +45,7 @@ export default function Notification(props: NotificationProps) {
     </WrapPopper>
   );
 
-  useBrowserLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (routes.NOTIFICATIONS === route.pathname) {
       setShowNor(true);
     } else {

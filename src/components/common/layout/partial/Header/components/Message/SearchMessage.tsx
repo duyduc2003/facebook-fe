@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React, { useEffect, useMemo, useState } from 'react';
-import { useAsync, useDebounce, useInputText } from 'hooks-react-custom';
+import { useAsync, useDebounce, useInput } from 'hooks-react-custom';
 
 import AccountSearch from '@/components/AccountSearch';
 import Button from '@/components/Button';
@@ -15,13 +15,13 @@ export default function SearchMessage(props: SearchMessageProps) {
   const {} = props;
 
   const [showSearchMess, setShowSearchMess] = useState(false);
-  const { execute, error, status, value } = useAsync(getUsers, false);
+  const { execute, error, status, value } = useAsync(getUsers);
   const [pending, setPending] = useState<boolean>(false);
   const [accounts, setAccounts] = useState<UserModel[]>([]);
 
-  const inputText = useInputText('');
+  const { value: valueInput, eventBind } = useInput('');
 
-  const { debouncedValue, isPending } = useDebounce<string>(inputText.value);
+  const { debouncedValue, isPending } = useDebounce<string>(valueInput);
 
   const accountsResult: UserModel[] = useMemo(
     () =>
@@ -117,7 +117,7 @@ export default function SearchMessage(props: SearchMessageProps) {
                 className="bg-transparent font-[400] text-[15px] w-full h-full outline-none pl-[8px] pr-[16px] transition-all duration-300 ease-linear text-primaryText"
                 placeholder="Tìm kiếm trên Messenger"
                 onFocus={handleInputFocus}
-                {...inputText}
+                {...eventBind}
               />
             </div>
           </div>

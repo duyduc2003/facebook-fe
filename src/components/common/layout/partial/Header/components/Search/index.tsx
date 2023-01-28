@@ -1,6 +1,7 @@
+import Skeleton from 'react-loading-skeleton';
 import React, { useCallback, useEffect, useId, useMemo, useState } from 'react';
 import classNames from 'classnames';
-import { useAsync, useDebounce, useInputText } from 'hooks-react-custom';
+import { useAsync, useDebounce, useInput } from 'hooks-react-custom';
 import Link from 'next/link';
 
 import {
@@ -13,12 +14,11 @@ import { HeadlessTippy } from '@/components/Popper';
 import WrapPopper from '@/components/Popper/WrapPopper';
 import Button from '@/components/Button';
 import { routes } from '@/utils/constants/common';
-
-import styles from './search.module.scss';
 import AccountSearch from '@/components/AccountSearch';
 import { getUsers } from '@/services/user';
 import { UserModel } from '@/interfaces/auth';
-import Skeleton from 'react-loading-skeleton';
+
+import styles from './search.module.scss';
 
 const cx = classNames.bind(styles);
 
@@ -27,14 +27,14 @@ interface SearchProps {}
 export default function Search(props: SearchProps) {
   const {} = props;
 
-  const inputText = useInputText('');
-  const { execute, error, status, value } = useAsync(getUsers, false);
+  const { value: valueInput, eventBind } = useInput('');
+  const { execute, error, status, value } = useAsync(getUsers);
 
   const [showPopperSearch, setShowPopperSearch] = useState<boolean>(false);
   const [pending, setPending] = useState<boolean>(false);
   const [accounts, setAccounts] = useState<UserModel[]>([]);
 
-  const { debouncedValue } = useDebounce<string>(inputText.value);
+  const { debouncedValue } = useDebounce<string>(valueInput);
 
   const accountsResult: UserModel[] = useMemo(
     () =>
@@ -173,7 +173,7 @@ export default function Search(props: SearchProps) {
                 autoComplete="off"
                 placeholder="Tìm kiếm trên Facebook"
                 onFocus={handleInputFocus}
-                {...inputText}
+                {...eventBind}
               />
             </label>
           </div>

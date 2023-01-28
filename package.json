@@ -21,7 +21,7 @@
     "eslint": "8.30.0",
     "eslint-config-next": "13.1.1",
     "firebase": "^9.15.0",
-    "hooks-react-custom": "^1.0.5",
+    "hooks-react-custom": "^2.2.4",
     "md5": "^2.3.0",
     "next": "13.1.1",
     "normalize.css": "^8.0.1",
