@@ -4,7 +4,6 @@ import { UserModel } from './auth';
 export interface PreviewChatModal {
   id?: ID;
   users_id: ID[];
-  users: UserModel[];
   preview_chat?: string;
   chats?: ChatModal[];
   timestamp?: string;

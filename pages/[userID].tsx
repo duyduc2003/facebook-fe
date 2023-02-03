@@ -1,3 +1,5 @@
+import { ParsedUrlQuery } from 'querystring';
+import { useRouter } from 'next/router';
 import Head from 'next/head';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useAsync, useMediaQuery } from 'hooks-react-custom';
@@ -19,11 +21,9 @@ import SkeletonUserDetail from '@/components/SkeletonLoading/SkeletonUserDetail'
 import EditProfile from '@/components/EditProfile';
 import { breakpoint, routes } from '@/utils/constants/common';
 import { GetServerSideProps } from 'next';
-import { ParsedUrlQuery } from 'querystring';
 import SkeletonPost from '@/components/SkeletonLoading/SkeletonPost';
 import { ID } from '@/interfaces/common';
 import { createPreviewChat } from '@/services/chat';
-import { useRouter } from 'next/router';
 
 interface ProfileProps {
   userData: UserModel;
@@ -46,7 +46,6 @@ function Profile(props: ProfileProps) {
       if (currentUser && userData.id && currentUser.id)
         return await createPreviewChat({
           users_id: [userData.id, currentUser.id],
-          users: [userData, currentUser],
           preview_chat: `${currentUser?.lastName} đã tạo đoạn chat.`,
         });
     },

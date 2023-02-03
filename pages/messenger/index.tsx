@@ -18,10 +18,13 @@ function Messenger() {
           <SidebarMessenger />
         </Sidebar>
         <Content size="full">
-          <div className="h-[calc(100vh_-_56px)]">
+          <div className="h-[calc(100vh_-_56px)] custom_md:block hidden">
             <div className="bg-webWash h-full text-center px-5 flex items-center justify-center text-secondaryText font-[700] text-[20px]">
               Hãy chọn một đoạn chat hoặc bắt đầu cuộc trò chuyện mới
             </div>
+          </div>
+          <div className="custom_md:hidden block">
+            <SidebarMessenger />
           </div>
         </Content>
       </Body>

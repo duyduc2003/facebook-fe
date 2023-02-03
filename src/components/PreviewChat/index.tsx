@@ -7,14 +7,20 @@ import { getChatsByCurrentUser } from '@/services/chat';
 import { PreviewChatModal } from '@/interfaces/chat';
 import { UserModel } from '@/interfaces/auth';
 
-interface PreviewChatProps {}
+interface PreviewChatProps {
+  setShowMess?: any;
+}
 
 export default function PreviewChat(props: PreviewChatProps) {
-  const {} = props;
+  const { setShowMess } = props;
 
   const { currentUser } = useAuth();
 
   const [previews, setPreviews] = useState<PreviewChatModal[]>([]);
+
+  const handleClick = () => {
+    setShowMess?.(false);
+  };
 
   useIsomorphicLayoutEffect(() => {
     const { unsubscribe } = getChatsByCurrentUser(
@@ -30,16 +36,16 @@ export default function PreviewChat(props: PreviewChatProps) {
   return (
     <div className="mt-[16px] flex flex-col overflow-x-hidden">
       {previews.map((item, i) => {
-        const friend = item.users.find((item) => item.id !== currentUser?.id);
+        const friendID = item.users_id.find((i) => i != currentUser?.id);
         return (
           <PreviewItem
             id={item.id || ''}
             key={`${item.id}-${i}`}
-            avatar={friend?.avatar || ''}
-            fullName={`${friend?.firstName} ${friend?.lastName}`}
+            friendID={`${friendID}`}
             statusSeen="seen"
             statusSend="youSend"
             body={item.preview_chat || ''}
+            onClick={handleClick}
           />
         );
       })}

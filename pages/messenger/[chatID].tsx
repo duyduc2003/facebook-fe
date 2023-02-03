@@ -13,19 +13,16 @@ import { getChatDetailByID } from '@/services/chat';
 import { routes } from '@/utils/constants/common';
 import { PreviewChatModal } from '@/interfaces/chat';
 import { useAuth } from '@/context/AuthContext';
+import { getUserByID } from '@/src/services/user';
+import * as authHelper from '@/utils/helper/AuthHelper';
+import { UserModel } from '@/interfaces/auth';
 
 interface DetailChatProps {
-  chatData: PreviewChatModal;
+  friendData: UserModel;
 }
 
 function DetailChat(props: DetailChatProps) {
-  const { chatData } = props;
-
-  const { currentUser } = useAuth();
-  const friend = React.useMemo(
-    () => chatData.users.find((item) => item.id !== currentUser?.id),
-    [chatData.users, currentUser?.id]
-  );
+  const { friendData } = props;
 
   return (
     <>
@@ -37,7 +34,7 @@ function DetailChat(props: DetailChatProps) {
           <SidebarMessenger />
         </Sidebar>
         <Content size="full">
-          <WrapChat friendData={friend} />
+          <WrapChat friendData={friendData} />
         </Content>
       </Body>
     </>
@@ -54,10 +51,16 @@ export const getServerSideProps: GetServerSideProps<DetailChatProps> = async (
   const { chatID } = context.params as ParsedUrlQuery;
   const { data, isError } = await getChatDetailByID(`${chatID}`);
 
-  if (!isError && data)
+  const friendID = data?.users_id.find(
+    (item) => item !== authHelper.getUser()?.id
+  );
+
+  const { data: userData, isError: errUser } = await getUserByID(`${friendID}`);
+
+  if (!errUser && userData)
     return {
       props: {
-        chatData: data,
+        friendData: userData,
       },
     };
 

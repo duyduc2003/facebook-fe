@@ -1,11 +1,15 @@
-import { useAsync, useInput, useScrollToElement } from 'hooks-react-custom';
+import {
+  useAsync,
+  useInput,
+  useKeyPressHandler,
+  useScrollToElement,
+} from 'hooks-react-custom';
 import React, { useCallback, useRef } from 'react';
 
 import Button from '@/components/Button';
 import { IconImageColor, IconLike } from '@/components/icon';
 import Image from '@/components/Image';
 import Input from '@/components/Input';
-import fakeData from '@/utils/constants/fakeData';
 import { IconSend } from '@/components/icon';
 import Chat from './Chat';
 import { sendChat } from '@/services/chat';
@@ -36,6 +40,10 @@ function WrapChat(props: WrapChatProps) {
       message: value,
       image: null,
     });
+  });
+
+  useKeyPressHandler('enter', () => {
+    handleSendChat();
   });
 
   const handleSendChat = useCallback(() => {

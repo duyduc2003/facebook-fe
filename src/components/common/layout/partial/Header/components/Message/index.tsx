@@ -10,7 +10,7 @@ import {
   IconPostSmall,
 } from '@/components/icon';
 import Button from '@/components/Button';
-import ListMessage from '@/components/PreviewChat';
+import PreviewChat from '@/components/PreviewChat';
 import { routes } from '@/utils/constants/common';
 
 import SearchMessage from './SearchMessage';
@@ -71,7 +71,7 @@ export default function Message(props: indexProps) {
       </div>
       <div>
         <SearchMessage />
-        <ListMessage />
+        <PreviewChat setShowMess={setShowMess} />
       </div>
     </WrapPopper>
   );
